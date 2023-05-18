@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  app:
+    container_name: project_paw
+    build: ./backend
+    ports:
+      - 3000:3000
+    restart: on-failure
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - database
+
+  database:
+    image: mariadb:10.2
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    restart: on-failure
+    volumes:
+     - ${PWD}/backend/mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+  
+  react:
+    container_name: app_frontend
+    build: ./frontend
+    restart: on-failure
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - app
+    ports:
+      - 3001:3000

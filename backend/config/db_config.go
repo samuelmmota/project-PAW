@@ -2,8 +2,7 @@ package config
 
 import (
 	"os"
-
-	"ufp.edu.pt/project-paw/entity"
+	"pawAPIbackend/entity"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
