@@ -8,6 +8,7 @@ import (
 	"pawAPIbackend/repository"
 
 	"github.com/mashingan/smapping"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GetAllUsers() []dto.UserResponseDTO {
@@ -29,6 +30,7 @@ func GetAllUsers() []dto.UserResponseDTO {
 }
 
 func Register(user entity.User) entity.User {
+	EncryptPassword(&user)
 	user = repository.InsertUser(user)
 	return user
 }
@@ -86,4 +88,17 @@ func DeleteAccount(userID uint64) error {
 
 func IsAllowedUser(userID uint64, user_id uint64) bool {
 	return userID == user_id
+}
+
+func EncryptPassword(user *entity.User) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	user.Password = string(hashedPassword)
+	return nil
+}
+
+func ComparePassword(user *entity.User, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 }

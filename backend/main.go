@@ -51,20 +51,15 @@ func main() {
 			user.PUT("/:id", middleware.Authorized(), controller.UpdateProfile)    // com AUTH + OWNER
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
-		/*
-			book := v1.Group("/book")
-			{
-				book.GET("/", controller.GetAllBooks)
-				book.GET("/:id", middleware.Authorized(), controller.GetBook) // DTO -> AUTH + OWNER -> necessario para checks no frontend
-				book.POST("/", middleware.Authorized(), controller.InsertBook)
-				book.PUT("/:id", middleware.Authorized(), controller.UpdateBook) // DTO -> AUTH + OWNER
-				/**
-				Error:
-				2023/04/12 00:48:55 /home/samuelmota/Desktop/Modulo 5/repository/book_repository.go:35 Error 1452: Cannot add or update a child row: a foreign key constraint fails (`books`.`books`, CONSTRAINT `fk_books_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`))
 
-		*/
-		//	book.DELETE("/:id", middleware.Authorized(), controller.DeleteBook)
-		//	}
+		submission := v1.Group("/submission")
+		{
+			submission.GET("/", controller.GetAllSubmissions)
+			submission.GET("/:id", middleware.Authorized(), controller.GetSubmission) // DTO -> AUTH + OWNER -> necessario para checks no frontend
+			submission.POST("/", middleware.Authorized(), controller.InsertSubmission)
+			submission.PUT("/:id", middleware.Authorized(), controller.UpdateSubmission) // DTO -> AUTH + OWNER
+			submission.DELETE("/:id", middleware.Authorized(), controller.DeleteSubmission)
+		}
 
 	}
 	router.Run(":3000")
