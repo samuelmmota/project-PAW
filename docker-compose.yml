@@ -24,4 +24,14 @@ services:
     ports:
       - 3306:3306
   
+  react:
+    container_name: app_frontend
+    build: ./frontend
+    restart: on-failure
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - app
+    ports:
+      - 3001:3000
 

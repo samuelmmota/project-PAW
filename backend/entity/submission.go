@@ -6,6 +6,7 @@ type Submission struct {
 	Description string `gorm:"type:text" json:"description"`
 	BodyPart    string `gorm:"type:varchar(255)" json:"body_part"`
 	Image       string `gorm:"type:varchar(255)" json:"image"`
+	Image       []byte `gorm:"type:longblob" json:"image"`
 	UserID      uint64 `gorm:"not null" json:"-"`
 	User        User   `gorm:"foreignkey:UserID;constraint;onUpdate:CASCADE;onDelete:CASCADE" json:"user"`
 }
