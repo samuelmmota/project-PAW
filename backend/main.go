@@ -11,6 +11,9 @@ import (
 
 var Users []entity.User
 
+// Set the desired buffer size for handling multipart requests
+const MaxMultipartMemory = 128 << 20 // 64 MB
+
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -34,6 +37,10 @@ func main() {
 	defer config.CloseDb()
 
 	router := gin.Default()
+
+	// Set the maximum multipart memory size
+	router.MaxMultipartMemory = MaxMultipartMemory
+
 	router.Use(CORSMiddleware())
 
 	v1 := router.Group("/paw/api/v1")
@@ -51,6 +58,10 @@ func main() {
 			user.PUT("/:id", middleware.Authorized(), controller.UpdateProfile)    // com AUTH + OWNER
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
+
+		v1.POST("/image", controller.InsertImage)
+		v1.GET("/image/:id", controller.GetImage)
+		v1.GET("/image", controller.GetAllImages)
 
 		submission := v1.Group("/submission")
 		{

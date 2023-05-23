@@ -55,3 +55,24 @@ func GetTheSubmissionUsingID(submissionID uint64) entity.Submission {
 	config.Db.Preload("User").First(&submission, submissionID)
 	return submission
 }
+
+func InsertImage(image entity.ImageTest) entity.ImageTest {
+	config.Db.Save(&image)
+	return image
+}
+
+func GetImageByID(imageID string) (*entity.ImageTest, error) {
+	var image entity.ImageTest
+	if err := config.Db.First(&image, imageID).Error; err != nil {
+		return nil, err
+	}
+	return &image, nil
+}
+
+func GetAllImages() ([]entity.ImageTest, error) {
+	var images []entity.ImageTest
+	if err := config.Db.Find(&images).Error; err != nil {
+		return nil, err
+	}
+	return images, nil
+}
