@@ -3,14 +3,14 @@ package middleware
 import (
 	"log"
 	"net/http"
-
-	"ufp.edu.pt/project-paw/service"
+	"pawAPIbackend/service"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-/**
+/*
+*
 Logica de validação fica noiddleware
 */
 func Authorized() gin.HandlerFunc {

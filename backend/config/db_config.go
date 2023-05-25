@@ -2,8 +2,7 @@ package config
 
 import (
 	"os"
-
-	"ufp.edu.pt/project-paw/entity"
+	"pawAPIbackend/entity"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -31,7 +30,7 @@ func ConnectDB() {
 		panic("Failed to connect to database!")
 	}
 
-	err = Db.AutoMigrate(&entity.User{}, &entity.Book{})
+	err = Db.AutoMigrate(&entity.User{}, &entity.Submission{}, &entity.ImageTest{})
 	if err != nil {
 		panic("Failed to migrate database!")
 	}
