@@ -4,6 +4,7 @@ type SubmissionCreateDTO struct {
 	Description string `json:"description" form:"description" binding:"required"`
 	BodyPart    string `json:"body_part" form:"body_part" binding:"required"`
 	Date        string `json:"date" form:"date" binding:"required"`
+	MediaType   string `json:"media_type" form:"media_type" binding:"required"`
 	//Image       string `json:"image" form:"image" binding:"required"`
 	//Media  []byte `json:"image" form:"image" binding:"required"`
 	UserID uint64 `json:"user_id,omitempty"  form:"user_id,omitempty"`
@@ -12,7 +13,8 @@ type SubmissionCreateDTO struct {
 type SubmissionResponseDTO struct {
 	BodyPart string `json:"body_part" binding:"required"`
 	//Image    string `json:"image" binding:"required"`
-	Media       []byte `json:"image" binding:"required"`
+	Media       []byte `json:"media" binding:"required"`
+	MediaType   string `json:"media_type" binding:"required"`
 	Date        string `json:"date" binding:"required"`
 	ID          uint64 `json:"id" binding:"required"`
 	Description string `json:"description" binding:"required"`

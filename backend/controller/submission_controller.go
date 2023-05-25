@@ -2,7 +2,6 @@ package controller
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
@@ -23,19 +22,16 @@ func GetAllSubmissions(c *gin.Context) {
 
 func InsertSubmission(c *gin.Context) {
 	var submissionCreateDTO dto.SubmissionCreateDTO
-	// Read the image file from the request body
-	//TEST code
-	multipartFile, err := c.FormFile("image")
+	// Read the Media file from the request body
+
+	multipartFile, err := c.FormFile("media")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Image upload failed",
+			"message": "Media upload failed",
 			"error":   err.Error(),
 		})
 		return
 	}
-	//
-
-	log.Output(2, "Cheguei aqui")
 
 	err = c.ShouldBind(&submissionCreateDTO)
 	if err != nil {
