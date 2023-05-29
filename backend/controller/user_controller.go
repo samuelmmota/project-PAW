@@ -32,8 +32,39 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+	if user.Email == "" || user.Password == "" {
+		c.JSON(400, gin.H{
+			"message": "error",
+			"error":   "email or password is empty",
+		})
+		return
+	}
 
-	user = service.Register(user)
+	if len(user.Password) < 6 {
+		c.JSON(400, gin.H{
+			"message": "error",
+			"error":   "password must be at least 6 characters",
+		})
+		return
+	}
+
+	if user, _ := service.CheckEmail(user.Email); user.ID != 0 {
+		c.JSON(400, gin.H{
+			"message": "error",
+			"error":   "User already exists",
+		})
+		return
+	}
+
+	user, err = service.Register(user)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message": "Registered User",

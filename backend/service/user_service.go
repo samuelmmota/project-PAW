@@ -29,10 +29,15 @@ func GetAllUsers() []dto.UserResponseDTO {
 	return responseList
 }
 
-func Register(user entity.User) entity.User {
-	EncryptPassword(&user)
-	user = repository.InsertUser(user)
-	return user
+func Register(user entity.User) (entity.User, error) {
+	err := EncryptPassword(&user)
+	user, err = repository.InsertUser(user)
+
+	return user, err
+}
+
+func CheckEmail(email string) (entity.User, error) {
+	return repository.CheckEmail(email)
 }
 
 func Profile(id uint64) (dto.UserProfileResponseDTO, error) {

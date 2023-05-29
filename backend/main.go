@@ -48,6 +48,7 @@ func main() {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", controller.Login)
+			auth.POST("/refreshtoken", controller.EvaluateToken)
 		}
 
 		user := v1.Group("/user")
@@ -59,6 +60,7 @@ func main() {
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
 
+		//TEST
 		v1.POST("/image", controller.InsertImage)
 		v1.GET("/image/:id", controller.GetImage)
 		v1.GET("/image", controller.GetAllImages)

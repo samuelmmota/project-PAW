@@ -6,6 +6,7 @@ import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { userUrl } from "../../resources/constants.js";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ const Profile = () => {
   const userID = decodedToken.user_id;
 
   const [user, setUser] = useState({
-    user_image: "",
     user_name: "",
     user_email: "",
   });
@@ -25,14 +25,13 @@ const Profile = () => {
   }, []);
 
   async function getMyUser() {
-    const url = "http://localhost:3000/api/v1/user/" + userID;
+    const url = userUrl + userID;
     try {
       const response = await Axios.get(url, {
         headers: { "Content-Type": "application/json", Authorization: token },
       });
       const userData = response.data.user;
       setUser({
-        user_image: userData.profile_picture,
         user_name: userData.name,
         user_email: userData.email,
       });
@@ -53,7 +52,6 @@ const Profile = () => {
       <ToastContainer />
       {isLoggedIn && (
         <User
-          userImage={user.user_image}
           userName={user.user_name}
           userEmail={user.user_email}
         />

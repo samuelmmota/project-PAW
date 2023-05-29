@@ -58,3 +58,12 @@ func ValidateToken(token string) (*jwt.Token, error) {
 		return []byte(signature), nil
 	})
 }
+
+func ExtractUserID(token *jwt.Token) (uint64, error) {
+	claims := token.Claims.(*jwtCustomClaim)
+	ID, err := strconv.ParseUint(claims.UserID, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return ID, nil
+}

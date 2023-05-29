@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { primaryColor, secondaryColor } from "../../resources/constants.js";
 
 export const Button = styled.button`
-  background-color: #fdc544;
+  background-color: ${primaryColor};
   border: none;
   border-radius: 5px;
   color: #fff;
