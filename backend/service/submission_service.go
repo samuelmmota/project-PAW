@@ -1,8 +1,11 @@
 package service
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
 	"errors"
-	"io/ioutil"
+	"golang.org/x/crypto/scrypt"
 	"log"
 	"mime/multipart"
 	"pawAPIbackend/dto"
@@ -34,7 +37,7 @@ func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 	return submissionResponse
 }
 
-func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile *multipart.FileHeader, userID uint64) (dto.SubmissionResponseDTO, error) {
+func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile *multipart.FileHeader, userID uint64, image entity.ImageTest) (dto.SubmissionResponseDTO, error) {
 	submission := entity.Submission{}
 	submissionResponse := dto.SubmissionResponseDTO{}
 
@@ -54,16 +57,17 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	}
 	defer file.Close()
 
-	// Read the file content
-	fileBytes, err := ioutil.ReadAll(file)
+	imageEncrypted, err := InsertImage(image, userID)
 	if err != nil {
-		log.Fatal("Failed to read image file", err)
+		log.Fatal("Failed to encrypt image", err)
 		return submissionResponse, err
 	}
 
-	submission.Media = fileBytes
-
 	submission.UserID = userID
+
+	submission.Media = imageEncrypted.ImageTest
+	submission.MediaType = imageEncrypted.MediaType
+
 	submission = repository.InsertSubmission(submission)
 
 	err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
@@ -75,8 +79,10 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	return submissionResponse, err
 }
 
-func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
+func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDTO, error) {
 	submissionResponse := dto.SubmissionResponseDTO{}
+
+	//TODO: Validation user before get submission
 
 	if submission, err := repository.GetSubmission(submissionID); err == nil {
 
@@ -89,6 +95,15 @@ func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 
 		return submissionResponse, nil
 	}
+
+	imageDecrypted, err := GetImage(submissionResponse.Media, userId)
+	if err != nil {
+		log.Fatal("Failed to decrypt image", err)
+		return submissionResponse, err
+	}
+
+	submissionResponse.Media = imageDecrypted
+
 	return submissionResponse, errors.New("submission do not exist")
 }
 
@@ -129,9 +144,7 @@ func IsAllowedToEdit(userID uint64, submissionID uint64) bool {
 	return userID == submission.UserID
 }
 
-/*
-func encryptImage(dto *dto.SubmissionCreateDTO, userPassword string) ([]byte, error) {
-	plainText := dto.Image
+func encryptImage(image []byte, userKey string) ([]byte, error) {
 
 	// Derive a key from the user's password
 	salt := make([]byte, saltSize)
@@ -139,7 +152,7 @@ func encryptImage(dto *dto.SubmissionCreateDTO, userPassword string) ([]byte, er
 	if err != nil {
 		return nil, err
 	}
-	key, err := scrypt.Key([]byte(userPassword), salt, 16384, 8, 1, 32)
+	key, err := scrypt.Key([]byte(userKey), salt, 16384, 8, 1, 32)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +177,7 @@ func encryptImage(dto *dto.SubmissionCreateDTO, userPassword string) ([]byte, er
 	}
 
 	// Encrypt the plaintext using GCM and the nonce
-	encryptedData := aesGCM.Seal(nil, nonce, plainText, nil)
+	encryptedData := aesGCM.Seal(nil, nonce, image, nil)
 
 	// Prepend the salt and nonce to the encrypted data
 	encryptedData = append(salt, encryptedData...)
@@ -173,7 +186,7 @@ func encryptImage(dto *dto.SubmissionCreateDTO, userPassword string) ([]byte, er
 	// Return the encrypted data
 	return encryptedData, nil
 }
-func decryptImage(encryptedData []byte, userPassword string) ([]byte, error) {
+func decryptImage(encryptedData []byte, userKey string) ([]byte, error) {
 	if len(encryptedData) < saltSize+encryptionNonceSize {
 		return nil, errors.New("invalid encrypted data")
 	}
@@ -183,7 +196,7 @@ func decryptImage(encryptedData []byte, userPassword string) ([]byte, error) {
 	cipherText := encryptedData[saltSize+encryptionNonceSize:]
 
 	// Derive the key from the user's password and the stored salt
-	key, err := scrypt.Key([]byte(userPassword), salt, 16384, 8, 1, 32)
+	key, err := scrypt.Key([]byte(userKey), salt, 16384, 8, 1, 32)
 	if err != nil {
 		return nil, err
 	}
@@ -208,30 +221,46 @@ func decryptImage(encryptedData []byte, userPassword string) ([]byte, error) {
 
 	// Return the decrypted data
 	return decryptedData, nil
-}*/
+}
 
-func InsertImage(image entity.ImageTest) entity.ImageTest {
-	// Get the user's password-> podemos vir buscar diretamente a hashed password porque como estamos no service
-	//já tems a certeza que o user é o owner da submission!
-	//userPassword, err := repository.GetUser(userID)
+func InsertImage(image entity.ImageTest, userId uint64) (entity.ImageTest, error) {
 
-	// Encrypt the image data using the user's password
-	/*encryptedImage, err := encryptImage(&submissionCreateDTO, userPassword.Password)
+	user, err := repository.GetUser(userId)
 	if err != nil {
-		log.Fatal("failed to encrypt image: ", err)
-		return submissionResponse
+		log.Fatal("failed to get user ", err)
+		return entity.ImageTest{}, err
 	}
 
-	submission.Image = encryptedImage*/
+	key := user.Key
 
-	imageReceived := repository.InsertImage(image)
-
-	/*submissionResponse.Image, err = decryptImage(submissionResponse.Image, userPassword.Password)
+	//Encrypt the image data using the user's key
+	encryptedImage, err := encryptImage(image.ImageTest, key)
 	if err != nil {
-		log.Fatal("failed to decrypt image data and map to response ", err)
-		return submissionResponse
-	}*/
+		log.Fatal("failed to encrypt image: ", err)
+		return entity.ImageTest{}, err
+	}
 
-	return imageReceived
+	image.ImageTest = encryptedImage
 
+	return image, nil
+}
+
+func GetImage(image []byte, userId uint64) ([]byte, error) {
+
+	user, err := repository.GetUser(userId)
+	if err != nil {
+		log.Fatal("failed to get user ", err)
+		return nil, err
+	}
+
+	key := user.Key
+
+	//Decrypt the image data using the user's key
+	decryptedImage, err := decryptImage(image, key)
+	if err != nil {
+		log.Fatal("failed to decrypt image: ", err)
+		return nil, err
+	}
+
+	return decryptedImage, nil
 }
