@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { primaryColor, secondaryColor } from "../../resources/constants.js";
 
 export const ContainerSubmission = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ export const ContainerButtonAdd = styled.div`
 `;
 
 export const ButtonAddSubmission = styled.button`
-  background-color: #fdc544;
+  background-color: ${primaryColor};
   color: #fff;
   border-radius: 16px;
   border: none;

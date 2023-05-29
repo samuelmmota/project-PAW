@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { auth_loginUrl } from "../../resources/constants.js";
+import { auth_loginUrl, userUrl } from "../../resources/constants.js";
 
 import {
   ContainerFormLogin,
@@ -23,14 +23,34 @@ const Login = () => {
 
   const [login, setLogin] = useState(false);
 
-  function handleSubmit(event) {
+  function handleSubmit(event, type) {
     event.preventDefault();
     console.log("handle submit");
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+  
+    if (!email || !password) {
+      toast.warning("Please enter both email and password", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
 
-    loginUser({
+    if (type === "login") {
+      loginUser({
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+    } else if (type === "register") {
+      registerButton({
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+    }
+   /* loginUser({
       email: emailRef.current.value,
       password: passwordRef.current.value,
-    });
+    });*/
   }
   async function loginUser(credentials) {
     console.log("login user");
@@ -58,23 +78,39 @@ const Login = () => {
     }
   }
 
-  function registerButton() {}
+  async function registerButton(credentials) {
+    try {
+      const response = await Axios.post(userUrl, JSON.stringify(credentials), {
+        headers: { "Content-Type": "application/json" },
+      });
+      toast.success("User Registered Successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } catch (error) {
+      sessionStorage.removeItem("token");
+      console.log(error);
+      toast.error(error.response.data.error, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+
+  }
+
   return (
     <>
       <Header />
       {login ? (
         <>
-          <Navigate to="/gallery" replace={true} />
+          <Navigate to="/" replace={true} />
         </>
       ) : (
         <ContainerFormLogin>
          <ToastContainer />
-
           <FormLogin onSubmit={handleSubmit}>
             <InputProfile
               placeholder="Email"
               name="email"
-              type="text"
+              type="email"
               ref={emailRef}
               required
             ></InputProfile>
@@ -87,10 +123,16 @@ const Login = () => {
             ></InputProfile>
             <ContainerAllButtons>
               <ContainerButton>
-                <ButtonLogin type="submit">Login</ButtonLogin>
+              <ButtonLogin
+                  type="submit"
+                  onClick={(event) => handleSubmit(event, "login")}>
+                  Login
+                </ButtonLogin>
               </ContainerButton>
               <ContainerButton>
-                <ButtonRegister type="button" onClick={registerButton}>
+              <ButtonRegister
+                  type="submit"
+                  onClick={(event) => handleSubmit(event, "register")}>
                   Register
                 </ButtonRegister>
               </ContainerButton>

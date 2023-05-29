@@ -6,13 +6,23 @@ import (
 	"pawAPIbackend/entity"
 )
 
-// Responsavel por inserir na base de dados
-func InsertUser(user entity.User) entity.User {
-	config.Db.Save(&user)
-	//relaçao de chave estrageira User-> User
-	//config.Db.Preload("User").Find(&user)
+func InsertUser(user entity.User) (entity.User, error) {
+	err := config.Db.Save(&user).Error
+	if err != nil {
+		return user, err
+	}
 
-	return user
+	return user, nil
+}
+
+func CheckEmail(email string) (entity.User, error) {
+	var user entity.User
+	err := config.Db.Where("email = ?", email).First(&user).Error
+	if err != nil {
+		return user, errors.New("User Not Found")
+	}
+
+	return user, nil
 }
 
 func GetAllUsers() []entity.User {

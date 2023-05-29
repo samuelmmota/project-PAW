@@ -10,8 +10,7 @@ import {
   Button
 } from "./styles";
 
-
-const User = ({ userImage, userName, userEmail }) => {
+const User = ({userName, userEmail }) => {
   const isLoggedIn = true;
   // variavel usada pra fazer a navegação pelas paginas
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ const User = ({ userImage, userName, userEmail }) => {
   function deleteUser(element) {
     console.log("delete user");
     console.log(element.target);
-    element.target.parentNode.parentNode.remove();
   }
   function editUser(element) {
     console.log("edit user button");
@@ -30,7 +28,7 @@ const User = ({ userImage, userName, userEmail }) => {
     <>
         <Container>
           <ProfileSection>
-          <ProfileImage src={userImage} alt="User profile Image" />
+          <ProfileImage src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg" alt="User profile Image" />
           <Name>{userName}</Name>
           <Email>{userEmail}</Email>
         </ProfileSection>

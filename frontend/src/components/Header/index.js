@@ -41,9 +41,9 @@ const Header = () => {
     navigate("/gallery");
   }
 
-  function persons() {
-    console.log("persons");
-    navigate("/persons");
+  function evaluate() {
+    console.log("evaluate");
+    navigate("/evaluate");
   }
   /*
    onClick={gallery}>Gallery  quando se clica chama a função de logout
@@ -60,10 +60,10 @@ const Header = () => {
           <ContainerMenu>
             {isLoggedIn ? (
               <>
-                <ButtonLogout onClick={persons}>Evaluate</ButtonLogout>
-                <ButtonLogout onClick={logout}>Logout</ButtonLogout>
+                <ButtonLogout onClick={evaluate}>Evaluate</ButtonLogout>
                 <Button onClick={() => navigate("/addsubmission")}>Add Submission</Button>
                 <ButtonLogin onClick={gallery}>Gallery</ButtonLogin>
+                <ButtonLogout onClick={logout}>Logout</ButtonLogout>
                 <a title="Your Profile" href="/profile">
                   <ProfileIcon src={profile} alt="Profile icon" />
                 </a>
@@ -71,8 +71,6 @@ const Header = () => {
             ) : (
               <>
                 <ButtonLogin onClick={login}>Login</ButtonLogin>
-                /
-                <ButtonLogin onClick={register}>Register</ButtonLogin>
               </>
             )}
           </ContainerMenu>
