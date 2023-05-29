@@ -21,7 +21,7 @@ jobs:
           go-version: 1.16
 
       - name: Initialize Go module
-        run: go mod init
+        run: go mod init projectpaw
 
       - name: Build backend
         run: go build ./backend
