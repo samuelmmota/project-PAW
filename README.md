@@ -6,16 +6,17 @@ PAW
 
 1. User Registration: The users will be able to register themselves on the website using their email address and password. Once registered, the user will be authenticated and can access the features of the website.
    [x] a. Users will navigate to the website and select the "Register" button.
-   [] b. Users will be directed to a registration form where they will enter their email address and password.
-   [] c. Once the user submits the registration form, the server will verify the email address is valid and not already registered.
-   [] d. If the email address is valid and not already registered, the server will create a new user account and authenticate the user.
-   [] e. The user will be redirected to the homepage of the website.
+   [x] b. Users will be directed to a registration form where they will enter their email address and password.
+   [x] c. Once the user submits the registration form, the server will verify the email address is valid and not already registered.
+   [x] d. If the email address is valid and not already registered, the server will create a new user account and authenticate the user.
+   [x] e. The user will be redirected to the homepage of the website.
 
 2. Image Submission: Authenticated users will be able to upload pictures of their skin affected by psoriasis. The images will be stored on the server-side.
    [] a. Authenticated users will navigate to the "Upload Image" page.
-   [] b. Users will select an image file from their local device and provide a description and the body positions of the image (e.g., head, stomach, leg, arm, etc.).
+   [x] b. Users will select an image file from their local device and provide a description and the body positions of the image (e.g., head, stomach, leg, arm, etc.).
    [] c. The server will encrypt the image using a secure encryption mechanism.
-   [] d. The encrypted image and the image description will be stored in the database. e. The user will be redirected to the "My Images" page (i.e., gallery of images).
+   [] d. The encrypted image and the image description will be stored in the database. 
+   [] e. The user will be redirected to the "My Images" page (i.e., gallery of images).
 
 3. Image Management: Authenticated users will be able to view a list of their uploaded images, update and delete them. They will also be able to filter the images based on the date and body positions.
    [] a. Authenticated users will navigate to the "My Images" page. 
