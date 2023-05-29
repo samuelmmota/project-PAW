@@ -24,7 +24,7 @@ PAW
 Web Application Design & Project in Systems and Networks 2
    [] c. Users will be able to select an image and view a larger version of the image along with its description.
    [] d. Users will be able to update an image's description.
-   [] e. Users will be able to delete an image.
+   [x] e. Users will be able to delete an image.
 
 4. Clinical Feedback: Users can authorize clinicians to view their uploaded images. Authorized clinicians can access the images and provide feedback to the patients. Multiple clinicians can be authorized to view the same patient's images. Clinicians can leave textual feedback for the patient.
    [] a. Users will navigate to the "Clinical Feedback" page.
