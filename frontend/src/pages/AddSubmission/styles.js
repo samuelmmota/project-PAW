@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { primaryColor, secondaryColor } from "../../resources/constants.js";
+import {
+    primaryColor,
+} from "../../resources/constants.js";
 
 export const ContainerSubmission = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 `;
 
 export const ContainerInfosSubmission = styled.form`
@@ -17,7 +20,6 @@ export const ContainerInfosSubmission = styled.form`
 export const ContainerInputs = styled.div`
   margin: 20px 0px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
 `;
 
@@ -35,7 +37,7 @@ export const InputEditSubmission = styled.input`
   padding: 2px 8px;
 `;
 
-export const InputEditSubmissionDescription = styled.input`
+export const InputEditSubmissionDescription = styled.textarea`
   color: #000;
   font-size: 16px;
   margin: 4px 0;
@@ -46,6 +48,7 @@ export const InputEditSubmissionDescription = styled.input`
 export const ContainerButtonAdd = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 `;
 
 export const ButtonAddSubmission = styled.button`
