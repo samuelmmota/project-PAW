@@ -20,21 +20,7 @@ export const ContainerInputs = styled.div`
   flex-direction: column;
 `;
 
-export const InputChangeImage = styled.input`
-  color: #000;
-  font-size: 16px;
-  margin: 4px 0;
-  padding: 2px 8px;
-`;
-
-export const InputEditSubmission = styled.input`
-  color: #000;
-  font-size: 16px;
-  margin: 4px 0;
-  padding: 2px 8px;
-`;
-
-export const InputEditSubmissionDescription = styled.input`
+export const InputEditSubmissionDescription = styled.textarea`
   color: #000;
   font-size: 16px;
   margin: 4px 0;
@@ -64,9 +50,9 @@ export const ButtonAddSubmission = styled.button`
 `;
 
 export const Title = styled.h1`
-text-align: center;
-margin-top: 20px;
-font-size: 2rem;
-color: #333;
-text-transform: uppercase;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2rem;
+  color: #333;
+  text-transform: uppercase;
 `;

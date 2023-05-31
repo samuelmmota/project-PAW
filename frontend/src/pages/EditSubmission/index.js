@@ -1,108 +1,109 @@
-import React, { useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { submissionUrl } from "../../resources/constants.js";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
-  ContainerSubmission,
-  ContainerInfosSubmission,
-  InputChangeImage,
-  ContainerInputs,
-  InputEditSubmissionDescription,
-  InputEditSubmission,
-  ContainerButtonAdd,
-  ButtonAddSubmission,
-  Title,
+    ContainerSubmission,
+    ContainerInfosSubmission,
+    ContainerInputs,
+    InputEditSubmissionDescription,
+    ContainerButtonAdd,
+    ButtonAddSubmission,
+    Title,
 } from "./styles";
 
 const EditSubmission = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-  const title = useRef();
-  const description = useRef();
-  const year = useRef();
-  const submissionCover = useRef();
+    const description = useRef();
+    const [selectedDate, setSelectedDate] = useState(null);
+    const body_part = useRef();
 
- async function editSubmission(e) {
-    //previne reload à pagina
-    e.preventDefault();
-    console.log("edit Submission");
+    async function editSubmission(e) {
+        e.preventDefault();
+        console.log("edit Submission");
 
-    const editedSubmission = {
-      title: title.current.value,
-      description: description.current.value,
-      year: year.current.value,
-    };
+        const editedSubmission = {
+            description: description.current.value,
+            date: selectedDate,
+            body_part: body_part.current.value,
+        };
 
-    const url = submissionUrl + id;
-    const token = sessionStorage.getItem("token");
+        const url = submissionUrl + id;
+        const token = sessionStorage.getItem("token");
 
-    try {
-     const response = await Axios.put(url, JSON.stringify(editedSubmission), {
-        headers: { "Content-Type": "application/json", Authorization: token },
-      });
+        try {
+            const response = await Axios.put(url, editedSubmission, {
+                headers: { Authorization: token },
+            });
 
-      console.log(response);
-      navigate("/gallery");
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+            console.log(response);
+            navigate("/gallery");
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message, {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     }
-  }
 
-  return (
-    <>
-      <Header />
-      <ToastContainer />
-      <Title>Edit Submission {id}</Title>
-      <ContainerSubmission>
-        <ContainerInfosSubmission onSubmit={editSubmission}>
-          <ContainerInputs>
-            <InputChangeImage
-              name="imageSubmission"
-              type="text"
-              placeholder="Submission cover url"
-              id="add_submission_cover"
-              ref={submissionCover}
-            />
-            <InputEditSubmission
-              name="titleSubmission"
-              placeholder="Submission title"
-              type="text"
-              id="add_submission_title"
-              ref={title}
-            />
-            <InputEditSubmissionDescription
-              name="descriptionSubmission"
-              placeholder="Submission description"
-              type="text"
-              id="add_submission_description"
-              ref={description}
-            />
-            <InputEditSubmission
-              name="yearSubmission"
-              placeholder="Submission year"
-              type="number"
-              id="add_submission_number"
-              ref={year}
-            />
-          </ContainerInputs>
-          <ContainerButtonAdd>
-            <ButtonAddSubmission>Edit</ButtonAddSubmission>
-          </ContainerButtonAdd>
-        </ContainerInfosSubmission>
-      </ContainerSubmission>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <ToastContainer />
+            <Title>Edit Submission {id}</Title>
+            <ContainerSubmission>
+                <ContainerInfosSubmission onSubmit={editSubmission}>
+                    <ContainerInputs>
+                        <InputEditSubmissionDescription
+                            name="descriptionSubmission"
+                            placeholder="Submission description"
+                            type="text"
+                            id="add_submission_description"
+                            required
+                            ref={description}
+                        />
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            placeholderText="Submission date"
+                            required
+                        />
+                        <select
+                            name="bodyPartSubmission"
+                            id="add_submission_body_part"
+                            required
+                            ref={body_part}
+                        >
+                            <option value="">Select Body Part</option>
+                            <option value="Face">Face</option>
+                            <option value="Head">Head</option>
+                            <option value="Hand">Hand</option>
+                            <option value="Feet">Feet</option>
+                            <option value="Leg">Leg</option>
+                            <option value="Body">Body</option>
+                            <option value="Chest">Chest</option>
+                            <option value="Back">Back</option>
+                            <option value="Arm">Arm</option>
+                            <option value="Belly">Belly</option>
+                        </select>
+                    </ContainerInputs>
+                    <ContainerButtonAdd>
+                        <ButtonAddSubmission>Edit</ButtonAddSubmission>
+                    </ContainerButtonAdd>
+                </ContainerInfosSubmission>
+            </ContainerSubmission>
+            <Footer />
+        </>
+    );
 };
 
 export default EditSubmission;

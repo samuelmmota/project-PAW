@@ -61,8 +61,8 @@ func InsertSubmission(c *gin.Context) {
 
 func GetSubmission(c *gin.Context) {
 	submissionID, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	submissionResponseDTO, err := service.GetSubmission(submissionID)
 	userID, _ := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+	submissionResponseDTO, err := service.GetSubmission(submissionID, userID)
 
 	if err != nil {
 		c.JSON(404, gin.H{

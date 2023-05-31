@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"golang.org/x/crypto/scrypt"
+	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"pawAPIbackend/dto"
@@ -37,7 +38,7 @@ func GetAllSubmissions() []dto.SubmissionResponseDTO {
 	return submissionResponse
 }
 
-func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile *multipart.FileHeader, userID uint64, image entity.ImageTest) (dto.SubmissionResponseDTO, error) {
+func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile *multipart.FileHeader, userID uint64) (dto.SubmissionResponseDTO, error) {
 	submission := entity.Submission{}
 	submissionResponse := dto.SubmissionResponseDTO{}
 
@@ -57,7 +58,19 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	}
 	defer file.Close()
 
-	imageEncrypted, err := InsertImage(image, userID)
+	// Read the file content
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatal("Failed to read image file", err)
+		return submissionResponse, err
+	}
+
+	submission.Media = fileBytes
+
+	submission.UserID = userID
+	submission = repository.InsertSubmission(submission)
+
+	/*imageEncrypted, err := InsertImage(fileBytes, userID)
 	if err != nil {
 		log.Fatal("Failed to encrypt image", err)
 		return submissionResponse, err
@@ -65,10 +78,9 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 	submission.UserID = userID
 
-	submission.Media = imageEncrypted.ImageTest
-	submission.MediaType = imageEncrypted.MediaType
+	submission.Media = imageEncrypted
 
-	submission = repository.InsertSubmission(submission)
+	submission = repository.InsertSubmission(submission)*/
 
 	err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
 	if err != nil {
@@ -95,16 +107,15 @@ func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDT
 
 		return submissionResponse, nil
 	}
+	return submissionResponse, errors.New("submission do not exist")
 
-	imageDecrypted, err := GetImage(submissionResponse.Media, userId)
+	/*imageDecrypted, err := GetImage(submissionResponse.Media, userId)
 	if err != nil {
 		log.Fatal("Failed to decrypt image", err)
 		return submissionResponse, err
 	}
 
-	submissionResponse.Media = imageDecrypted
-
-	return submissionResponse, errors.New("submission do not exist")
+	submissionResponse.Media = imageDecrypted*/
 }
 
 func UpdateSubmission(submissionDTO dto.SubmissionUpdateDTO) (dto.SubmissionResponseDTO, error) {
@@ -223,26 +234,26 @@ func decryptImage(encryptedData []byte, userKey string) ([]byte, error) {
 	return decryptedData, nil
 }
 
-func InsertImage(image entity.ImageTest, userId uint64) (entity.ImageTest, error) {
+func InsertImage(image []byte, userId uint64) ([]byte, error) {
 
 	user, err := repository.GetUser(userId)
 	if err != nil {
 		log.Fatal("failed to get user ", err)
-		return entity.ImageTest{}, err
+		return nil, err
 	}
 
 	key := user.Key
 
 	//Encrypt the image data using the user's key
-	encryptedImage, err := encryptImage(image.ImageTest, key)
+	encryptedImage, err := encryptImage(image, key)
 	if err != nil {
 		log.Fatal("failed to encrypt image: ", err)
-		return entity.ImageTest{}, err
+		return nil, err
 	}
 
-	image.ImageTest = encryptedImage
+	imageResult := encryptedImage
 
-	return image, nil
+	return imageResult, nil
 }
 
 func GetImage(image []byte, userId uint64) ([]byte, error) {
