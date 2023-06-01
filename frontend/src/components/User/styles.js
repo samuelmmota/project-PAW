@@ -53,7 +53,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 60vh;
 `;
 
 export const ProfileSection = styled.div`

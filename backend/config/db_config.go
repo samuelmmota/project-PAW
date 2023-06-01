@@ -30,7 +30,7 @@ func ConnectDB() {
 		panic("Failed to connect to database!")
 	}
 
-	err = Db.AutoMigrate(&entity.User{}, &entity.Submission{}, &entity.ImageTest{})
+	err = Db.AutoMigrate(&entity.User{}, &entity.Submission{}, &entity.ImageTest{}, &entity.Clinical{})
 	if err != nil {
 		panic("Failed to migrate database!")
 	}
