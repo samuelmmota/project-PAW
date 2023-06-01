@@ -16,7 +16,7 @@ import Axios from "axios";
 import { submissionUrl } from "../../resources/constants.js";
 
 
-const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions, owner }) => {
+const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions }) => {
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;
   // variavel usada pra fazer a navegação pelas paginas
@@ -142,7 +142,6 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
         <p>{description}</p>
         <TitleSubmission>{body_part}</TitleSubmission>
         <center>
-          {owner && (
             <ButtonContainer>
               <Button type="button" onClick={editSubmission}>
                 Update
@@ -151,7 +150,6 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
                 Delete
               </Button>
             </ButtonContainer>
-          )}
         </center>
       </ContainerSubmission>
     </>

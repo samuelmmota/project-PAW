@@ -8,7 +8,8 @@ import Header from "../../components/Header";
 import User from "../../components/User";
 import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
 import {
-  Title
+  Title,
+  Form
 } from "./styles";
 
 const Evaluate = () => {
@@ -19,6 +20,8 @@ const Evaluate = () => {
   useEffect(() => {
     RefreshToken();
   }, []);
+
+
 
   async function RefreshToken() {
     const token = sessionStorage.getItem("token");
@@ -42,6 +45,10 @@ const Evaluate = () => {
     <>
       <Header />
       <ToastContainer />
+      <Title> Clinical Feedback </Title>
+      
+
+
       <Footer />
     </>
   );

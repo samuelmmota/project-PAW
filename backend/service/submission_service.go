@@ -21,9 +21,9 @@ const (
 	encryptionNonceSize = 12
 )
 
-func GetAllSubmissions() []dto.SubmissionResponseDTO {
+func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 	var submissionResponse []dto.SubmissionResponseDTO
-	submissions := repository.GetAllSubmissions()
+	submissions := repository.GetAllUserSubmissions(userID)
 
 	for _, user := range submissions {
 		response := dto.SubmissionResponseDTO{}
