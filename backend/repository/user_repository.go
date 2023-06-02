@@ -51,6 +51,15 @@ func UpdateUser(user entity.User) (entity.User, error) {
 	return user, errors.New("User do not exists")
 }
 
+func GetUsersByEmail(emails []string) ([]entity.User, error) {
+	var users []entity.User
+	err := config.Db.Where("email IN (?)", emails).Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
 func DeleteUser(userID uint64) error {
 	var user entity.User
 	config.Db.First(&user, userID)

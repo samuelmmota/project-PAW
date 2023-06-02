@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef, useState, useEffect} from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import Axios from "axios";
@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
 
 import {
   ContainerSubmission,
@@ -31,7 +32,27 @@ const AddSubmission = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
 
-  
+  useEffect(() => {
+    RefreshToken();
+  }, []);
+
+  async function RefreshToken() {
+    const token = sessionStorage.getItem("token");
+
+    try {
+      const response = await Axios.post(refreshTokenUrl, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("Token is valid!");
+    } catch (error) {
+      console.log("Token is expired or not existent!");
+      sessionStorage.removeItem("token");
+      navigate("/login");
+      toast.error(error.response.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  }
 
   async function addSubmission(e) {
     e.preventDefault();

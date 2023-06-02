@@ -2,6 +2,7 @@ package controller
 
 import (
 	"io/ioutil"
+	"log"
 	"net/http"
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
@@ -13,10 +14,23 @@ import (
 )
 
 func GetAllSubmissions(c *gin.Context) {
+	// vai buscar ao token(conveertido em string nos parematros) to jwt token
+	userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+	log.Default().Println(userID)
+
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	submissions := service.GetAllSubmissions(userID)
 
 	c.JSON(200, gin.H{
 		"message":     "select submissions",
-		"submissions": service.GetAllSubmissions(),
+		"submissions": submissions,
 	})
 }
 

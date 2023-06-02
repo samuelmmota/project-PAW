@@ -20,6 +20,12 @@ func GetAllSubmissions() []entity.Submission {
 	return submissions
 }
 
+func GetAllUserSubmissions(userID uint64) []entity.Submission {
+	var submissions []entity.Submission
+	config.Db.Preload("User").Where("user_id = ?", userID).Find(&submissions)
+	return submissions
+}
+
 func GetSubmission(submissionID uint64) (entity.Submission, error) {
 	var submission entity.Submission
 	config.Db.Preload("User").First(&submission, submissionID)
