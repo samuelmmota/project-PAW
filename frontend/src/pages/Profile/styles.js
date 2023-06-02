@@ -57,7 +57,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+
 `;
 
 export const ProfileSection = styled.div`
@@ -88,4 +88,46 @@ export const Email = styled.p`
   margin-top: 10px;
   font-size: 1.2rem;
   color: #666;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px 20px;
+  max-width: 400px;
+  margin: 0 auto;
+`;
+
+export const ClinicalList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+`;
+
+export const ClinicalItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f2f2f2;
+  margin-bottom: 10px;
+`;
+
+export const RemoveButton = styled.button`
+  background-color: #ff5e5e;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+export const PageContainer = styled.div`
+  margin-bottom: 90px; /* Adjust the margin as needed */
 `;

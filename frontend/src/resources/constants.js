@@ -11,7 +11,9 @@ export const userUrl = `${apiUrl}/user/`;
 export const auth_loginUrl = `${apiUrl}/auth/login`; 
 export const auth_registerUrl = `${apiUrl}/auth/register`; 
 export const refreshTokenUrl = `${apiUrl}/auth/refreshtoken`;
-export const images_test = `${apiUrl}/image`; 
+export const images_test = `${apiUrl}/image`;
+export const evaluateUrl = `${apiUrl}/evaluate`;
+export const clinicalUrl = `${apiUrl}/user/clinical/`;
 
 //Colors
 export const primaryColor = "#33FFEC"
