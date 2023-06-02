@@ -60,6 +60,13 @@ func main() {
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
 
+		clinical := user.Group("/clinical")
+		{
+			clinical.GET("/:id", middleware.Authorized(), controller.GetUserClinicals)
+			clinical.POST("/:id", middleware.Authorized(), controller.AddUserClinical)
+			clinical.DELETE("/:id", middleware.Authorized(), controller.RemoveUserClinical)
+		}
+
 		//TEST
 		v1.POST("/image", controller.InsertImage)
 		v1.GET("/image/:id", controller.GetImage)
@@ -67,7 +74,7 @@ func main() {
 
 		submission := v1.Group("/submission")
 		{
-			submission.GET("/", controller.GetAllSubmissions)
+			submission.GET("/", middleware.Authorized(), controller.GetAllSubmissions)
 			submission.GET("/:id", middleware.Authorized(), controller.GetSubmission) // DTO -> AUTH + OWNER -> necessario para checks no frontend
 			submission.POST("/", middleware.Authorized(), controller.InsertSubmission)
 			submission.PUT("/:id", middleware.Authorized(), controller.UpdateSubmission) // DTO -> AUTH + OWNER

@@ -13,3 +13,6 @@ font-size: 2rem;
 color: #333;
 text-transform: uppercase;
 `;
+export const PageContainer = styled.div`
+  margin-bottom: 90px; /* Adjust the margin as needed */
+`;
