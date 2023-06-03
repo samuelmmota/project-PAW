@@ -42,6 +42,10 @@ func AddUserClinical(patientID uint64, clinicalCreateDTO dto.ClinicalCreateDTO) 
 		return clinicalResponseDTO, errors.New("clinical not found")
 	}
 
+	if clinicalUser.IsClinical == false {
+		return clinicalResponseDTO, errors.New("User is not a clinical")
+	}
+
 	clinical := entity.Clinical{
 		ClinicalID: clinicalUser.ID,
 		Clinical:   clinicalUser,
@@ -62,4 +66,23 @@ func AddUserClinical(patientID uint64, clinicalCreateDTO dto.ClinicalCreateDTO) 
 	clinicalResponseDTO.ClinicalEmail = clinical.Clinical.Email
 
 	return clinicalResponseDTO, err
+}
+
+func GetClinicalSubmissions(clinicalID uint64) ([]dto.ClinicalSubmissionResponseDTO, error) {
+	var clinicalSubmissionsResponse []dto.ClinicalSubmissionResponseDTO
+
+	clinicals := repository.GetAllUserClinicals(clinicalID)
+
+	for _, clinical := range clinicals {
+		response := dto.ClinicalSubmissionResponseDTO{}
+		response.Submission = GetAllSubmissions(clinical.PatientID)
+		response.Email = clinical.Patient.Email
+		clinicalSubmissionsResponse = append(clinicalSubmissionsResponse, response)
+	}
+
+	/*if err != nil {
+		return clinicalSubmissionsResponse, nil
+	}*/
+
+	return clinicalSubmissionsResponse, nil
 }

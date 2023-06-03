@@ -17,6 +17,7 @@ import {
   ButtonLogin,
   ButtonRegister,
 } from "./styles";
+import PageLayout from "../../components/PageLayout";
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -98,7 +99,7 @@ const Login = () => {
 
   return (
     <>
-      <Header />
+    <PageLayout>
       {login ? (
         <>
           <Navigate to="/" replace={true} />
@@ -140,7 +141,7 @@ const Login = () => {
           </FormLogin>
         </ContainerFormLogin>
       )}
-      <Footer />
+      </PageLayout>
     </>
   );
 };

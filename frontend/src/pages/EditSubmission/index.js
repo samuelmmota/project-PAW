@@ -68,19 +68,16 @@ const EditSubmission = () => {
                             placeholder="Submission description"
                             type="text"
                             id="add_submission_description"
-                            required
                             ref={description}
                         />
                         <DatePicker
                             selected={selectedDate}
                             onChange={(date) => setSelectedDate(date)}
                             placeholderText="Submission date"
-                            required
                         />
                         <select
                             name="bodyPartSubmission"
                             id="add_submission_body_part"
-                            required
                             ref={body_part}
                         >
                             <option value="">Select Body Part</option>

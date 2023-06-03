@@ -8,6 +8,7 @@ import (
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
 	"pawAPIbackend/repository"
+	"strconv"
 
 	"github.com/mashingan/smapping"
 	"golang.org/x/crypto/bcrypt"
@@ -68,14 +69,28 @@ func Profile(id uint64) (dto.UserProfileResponseDTO, error) {
 }
 
 func UpdateProfile(userDto dto.UserUpdateDTO) (dto.UserResponseDTO, error) {
-	user := entity.User{}
-	userResponse := dto.UserResponseDTO{}
-
-	err := smapping.FillStruct(&user, smapping.MapFields(&userDto))
+	user, err := repository.GetUser(userDto.ID)
 	if err != nil {
-		log.Fatal("failed to map ", err)
-		return userResponse, nil
+		return dto.UserResponseDTO{}, errors.New("User does not exist")
 	}
+	if userDto.Email != "" {
+		user.Email = userDto.Email
+	}
+
+	if userDto.Password != "" {
+		user.Password = userDto.Password
+		//encript there
+	}
+
+	if userDto.IsClinical != "" {
+		isClinical, err := strconv.ParseBool(userDto.IsClinical)
+		if err != nil {
+			return dto.UserResponseDTO{}, errors.New("Invalid value for IsClinical")
+		}
+		user.IsClinical = isClinical
+	}
+
+	userResponse := dto.UserResponseDTO{}
 
 	if user, err = repository.UpdateUser(user); err == nil {
 

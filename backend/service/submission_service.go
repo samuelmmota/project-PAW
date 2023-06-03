@@ -5,14 +5,16 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
-	"golang.org/x/crypto/scrypt"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
 	"pawAPIbackend/repository"
+	"strconv"
 	"strings"
+
+	"golang.org/x/crypto/scrypt"
 
 	"github.com/mashingan/smapping"
 )
@@ -126,18 +128,36 @@ func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDT
 }
 
 func UpdateSubmission(submissionDTO dto.SubmissionUpdateDTO) (dto.SubmissionResponseDTO, error) {
-	submission := entity.Submission{}
-	submissionResponse := dto.SubmissionResponseDTO{}
-
-	err := smapping.FillStruct(&submission, smapping.MapFields(&submissionDTO))
+	submission, err := repository.GetSubmission(submissionDTO.ID)
 	if err != nil {
-		log.Fatal("failed to map ", err)
-		return submissionResponse, nil
+		return dto.SubmissionResponseDTO{}, errors.New("Submission does not exist")
 	}
 
-	if submission, err = repository.UpdateSubmission(submission); err == nil {
+	if submissionDTO.Description != "" {
+		submission.Description = submissionDTO.Description
+	}
 
-		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
+	if submissionDTO.BodyPart != "" {
+		submission.BodyPart = submissionDTO.BodyPart
+	}
+
+	if submissionDTO.Date != "" {
+		submission.Date = submissionDTO.Date
+	}
+
+	if submissionDTO.ShareWithClinicals != "" {
+		isSharedWithClinicals, err := strconv.ParseBool(submissionDTO.ShareWithClinicals)
+		if err != nil {
+			return dto.SubmissionResponseDTO{}, errors.New("Invalid value for IsClinical")
+		}
+		submission.ShareWithClinicals = isSharedWithClinicals
+	}
+
+	submissionResponse := dto.SubmissionResponseDTO{}
+
+	if submissionUpdated, err := repository.UpdateSubmission(submission); err == nil {
+
+		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submissionUpdated))
 
 		if err != nil {
 			log.Fatal("failed to map to response ", err)
@@ -283,7 +303,7 @@ func GetImage(image []byte, userId uint64) ([]byte, error) {
 	return decryptedImage, nil
 }
 
-func isValidFormat(mediaType string) (error) {
+func isValidFormat(mediaType string) error {
 	imageFormats := []string{"jpg", "jpeg", "png", "gif"}
 	videoFormats := []string{"mp4", "avi", "mov"}
 

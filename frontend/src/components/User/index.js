@@ -9,11 +9,18 @@ import {
   ButtonContainer,
   Button
 } from "./styles";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { userUrl } from "../../resources/constants.js";
+import Axios from "axios";
+const User = ({userName, userEmail, isClinical }) => {
 
-const User = ({userName, userEmail }) => {
-  const isLoggedIn = true;
   // variavel usada pra fazer a navegação pelas paginas
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
+  const isLoggedIn = token !== null;
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const userID = decodedToken.user_id;
 
   function deleteUser(element) {
     console.log("delete user");
@@ -24,12 +31,43 @@ const User = ({userName, userEmail }) => {
     console.log(element.target);
     navigate("/edituser");
   }
+
+  async function imaDoctor(element) {
+    const url = userUrl + userID;
+    try {
+      const response = await Axios.put(
+        url,
+        {
+          isClinical: "true",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+    } catch (error) {
+      toast.error(error.response?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  }
+  
+
+  function allowToExportData(element) {
+  }
   return (
     <>
+     <ToastContainer />
         <Container>
           <ProfileSection>
           <ProfileImage src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg" alt="User profile Image" />
-          <Name>{userName}</Name>
+          {isClinical && (
+            <>
+                <Name> User is a doctor!</Name>
+           </>
+          )}
           <Email>{userEmail}</Email>
         </ProfileSection>
         <center>
@@ -41,6 +79,16 @@ const User = ({userName, userEmail }) => {
             <Button type="button" onClick={deleteUser}>
               Delete
             </Button>
+            {!isClinical && (
+              <>
+            <Button type="button" onClick={imaDoctor}>
+              I'm a Doctor!
+            </Button>
+            <Button type="button" onClick={allowToExportData}>
+              Allow to export data to research
+            </Button>
+            </>
+              )}
             </ButtonContainer>
           )}
         </center>

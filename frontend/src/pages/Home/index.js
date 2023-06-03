@@ -9,10 +9,11 @@ import {
   FeatureDescription,
       
 } from "./style";
+import PageLayout from "../../components/PageLayout";
 const Home = () => {
   return (
     <>
-    <Header />
+    <PageLayout>
     <Layout>
       <Title>Enhancing Psoriasis Awareness and Support</Title>
 
@@ -66,7 +67,7 @@ const Home = () => {
         </FeatureDescription>
       </FeatureContainer>
     </Layout>
-    <Footer />
+    </PageLayout>
     </>
   );
 };
