@@ -16,6 +16,6 @@ export const evaluateUrl = `${apiUrl}/evaluate`;
 export const clinicalUrl = `${apiUrl}/user/clinical/`;
 
 //Colors
-export const primaryColor = "#33FFEC"
-export const secondaryColor = "#B1FFF8";
+export const primaryColor = "#4169E1"
+export const secondaryColor = "#8A2BE2";
 //Integers
