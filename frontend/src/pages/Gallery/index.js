@@ -5,7 +5,7 @@ import Submission from "../../components/Submission";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ContainerSubmissions, PageContainer } from "./styles";
+import { ContainerSubmissions, PageContainer, FilterContainer, FilterItem, FilterLabel } from "./styles";
 import { submissionUrl } from "../../resources/constants.js";
 import { useNavigate } from "react-router-dom";
 import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
@@ -13,6 +13,12 @@ import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constant
 const Gallery = () => {
   const [media, setMedia] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBodyPart, setSelectedBodyPart] = useState("");
+  const [descriptionFilter, setDescriptionFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+
 
   useEffect(() => {
     fetchMedia();
@@ -87,9 +93,82 @@ const Gallery = () => {
     <PageContainer>
       <Header />
       <ToastContainer />
+        <FilterContainer>
+          <FilterItem>
+            <FilterLabel>Body Part:</FilterLabel>{
+          <select
+            value={selectedBodyPart}
+            onChange={(event) => setSelectedBodyPart(event.target.value)}
+          >
+            <option value="">Select Body Part</option>
+            <option value="Face">Face</option>
+            <option value="Head">Head</option>
+            <option value="Hand">Hand</option>
+            <option value="Feet">Feet</option>
+            <option value="Leg">Leg</option>
+            <option value="Body">Body</option>
+            <option value="Chest">Chest</option>
+            <option value="Back">Back</option>
+            <option value="Arm">Arm</option>
+            <option value="Belly">Belly</option>
+          </select>
+          }
+          </FilterItem>
+          <FilterItem>
+    <FilterLabel>Description:</FilterLabel>
+    {
+          <input
+            type="text"
+            value={descriptionFilter}
+            onChange={(event) => setDescriptionFilter(event.target.value)}
+            placeholder="Filter by description"
+          />}
+          </FilterItem>
+          <FilterItem>
+    <FilterLabel>Start Date:</FilterLabel>
+    {
+          <input
+            type="date"
+            value={startDate}
+            onChange={(event) => setStartDate(event.target.value)}
+          />}
+          </FilterItem>
+          <FilterItem>
+    <FilterLabel>End Date:</FilterLabel>
+    {
+          <input
+            type="date"
+            value={endDate}
+            onChange={(event) => setEndDate(event.target.value)}
+          />}
+          </FilterItem>
+        </FilterContainer>  
       <ContainerSubmissions>
         {submissions.length > 0 ? (
-          submissions.map((submission, index) => (
+          submissions
+          .filter((submission) => {
+            // Filtrar pelo body_part
+            if (selectedBodyPart !== "" && submission.body_part !== selectedBodyPart) {
+              return false;
+            }
+            // Filtrar pela descrição
+            if (
+              descriptionFilter !== "" &&
+              !submission.description.toLowerCase().includes(descriptionFilter.toLowerCase())
+            ) {
+              return false;
+            }
+            // Filtrar pela data de início
+            if (startDate !== "" && submission.date <= startDate) {
+              return false;
+            }
+            // Filtrar pela data de fim
+            if (endDate !== "" && submission.date >= endDate) {
+              return false;
+            }
+            return true;
+          })
+          .map((submission, index) => (
             <Submission
               image={submission.image}
               body_part={submission.body_part}

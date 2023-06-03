@@ -12,6 +12,7 @@ import (
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
 	"pawAPIbackend/repository"
+	"strings"
 
 	"github.com/mashingan/smapping"
 )
@@ -45,6 +46,12 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	err := smapping.FillStruct(&submission, smapping.MapFields(&submissionCreateDTO))
 	if err != nil {
 		log.Fatal("failed to map ", err)
+		return submissionResponse, err
+	}
+
+	err = isValidFormat(multipartFile.Filename)
+	if err != nil {
+		log.Fatal("Wrong format type inserted!", err)
 		return submissionResponse, err
 	}
 
@@ -274,4 +281,33 @@ func GetImage(image []byte, userId uint64) ([]byte, error) {
 	}
 
 	return decryptedImage, nil
+}
+
+func isValidFormat(mediaType string) (error) {
+	imageFormats := []string{"jpg", "jpeg", "png", "gif"}
+	videoFormats := []string{"mp4", "avi", "mov"}
+
+	fileExt := getFileExtension(mediaType)
+
+	for _, format := range imageFormats {
+		if format == fileExt {
+			return nil
+		}
+	}
+
+	for _, format := range videoFormats {
+		if format == fileExt {
+			return nil
+		}
+	}
+
+	return errors.New("Not Valid Format!")
+}
+
+func getFileExtension(mediaType string) string {
+	parts := strings.Split(mediaType, ".")
+	if len(parts) > 1 {
+		return strings.ToLower(parts[len(parts)-1])
+	}
+	return ""
 }

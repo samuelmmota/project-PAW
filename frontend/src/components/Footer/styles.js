@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { primaryColor, secondaryColor } from "../../resources/constants.js";
 /**
 Style components CSS servem para ser usados como copmpoentes de estilos em jss
 */
 export const ContainerFooter = styled.div`
-  background-color: #33FFEC;
-  color: #000;
+  background-color: ${primaryColor};
+  color: white;
   font-family: "Anton", sans-serif;
   font-size: 18px;
   font-weight: bold;

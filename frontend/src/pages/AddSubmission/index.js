@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useRef, useState } from "react";
-=======
 import React, { useRef, useState, useEffect} from "react";
->>>>>>> main
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import Axios from "axios";
@@ -32,8 +28,6 @@ const AddSubmission = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
 
-<<<<<<< HEAD
-=======
   useEffect(() => {
     RefreshToken();
   }, []);
@@ -56,7 +50,6 @@ const AddSubmission = () => {
     }
   }
 
->>>>>>> main
   async function addSubmission(e) {
     e.preventDefault();
     console.log("add submission");
