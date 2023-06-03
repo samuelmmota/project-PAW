@@ -20,6 +20,7 @@ import {
   ButtonAddSubmission,
 } from "./styles";
 import { submissionUrl } from "../../resources/constants.js";
+import PageLayout from "../../components/PageLayout";
 
 
 const AddSubmission = () => {
@@ -122,7 +123,7 @@ const AddSubmission = () => {
 
   return (
     <>
-      <Header />
+    <PageLayout>
       <ToastContainer />
       <ContainerSubmission>
         <ContainerInfosSubmission onSubmit={addSubmission}>
@@ -172,7 +173,7 @@ const AddSubmission = () => {
           </ContainerButtonAdd>
         </ContainerInfosSubmission>
       </ContainerSubmission>
-      <Footer />
+    </PageLayout>
     </>
   );
 };

@@ -8,6 +8,7 @@ import (
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
 	"pawAPIbackend/repository"
+	"strconv"
 
 	"github.com/mashingan/smapping"
 )
@@ -93,18 +94,36 @@ func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 }
 
 func UpdateSubmission(submissionDTO dto.SubmissionUpdateDTO) (dto.SubmissionResponseDTO, error) {
-	submission := entity.Submission{}
-	submissionResponse := dto.SubmissionResponseDTO{}
-
-	err := smapping.FillStruct(&submission, smapping.MapFields(&submissionDTO))
+	submission, err := repository.GetSubmission(submissionDTO.ID)
 	if err != nil {
-		log.Fatal("failed to map ", err)
-		return submissionResponse, nil
+		return dto.SubmissionResponseDTO{}, errors.New("Submission does not exist")
 	}
 
-	if submission, err = repository.UpdateSubmission(submission); err == nil {
+	if submissionDTO.Description != "" {
+		submission.Description = submissionDTO.Description
+	}
 
-		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
+	if submissionDTO.BodyPart != "" {
+		submission.BodyPart = submissionDTO.BodyPart
+	}
+
+	if submissionDTO.Date != "" {
+		submission.Date = submissionDTO.Date
+	}
+
+	if submissionDTO.ShareWithClinicals != "" {
+		isSharedWithClinicals, err := strconv.ParseBool(submissionDTO.ShareWithClinicals)
+		if err != nil {
+			return dto.SubmissionResponseDTO{}, errors.New("Invalid value for IsClinical")
+		}
+		submission.ShareWithClinicals = isSharedWithClinicals
+	}
+
+	submissionResponse := dto.SubmissionResponseDTO{}
+
+	if submissionUpdated, err := repository.UpdateSubmission(submission); err == nil {
+
+		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submissionUpdated))
 
 		if err != nil {
 			log.Fatal("failed to map to response ", err)

@@ -82,3 +82,28 @@ func GetAllImages() ([]entity.ImageTest, error) {
 	}
 	return images, nil
 }
+
+func GetClinicSubmissions(userID uint64) ([]entity.Submission, error) {
+	var submissions []entity.Submission
+	err := config.Db.
+		Preload("Clinical").
+		Preload("Patient").
+		Joins("JOIN clinicals ON clinicals.patient_id = submissions.user_id").
+		Where("clinicals.clinical_id = ?", userID).
+		Find(&submissions).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return submissions, nil
+}
+
+func GetEmailFromID(userID uint64) (string, error) {
+	var user entity.User
+	err := config.Db.First(&user, userID).Error
+	if err != nil {
+		return "", err
+	}
+
+	return user.Email, nil
+}

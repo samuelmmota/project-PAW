@@ -63,6 +63,11 @@ func main() {
 		clinical := user.Group("/clinical")
 		{
 			clinical.GET("/:id", middleware.Authorized(), controller.GetUserClinicals)
+			clinical.GET("/clinicals/:id", middleware.Authorized(), controller.GetUserClinicals)
+			clinical.GET("/patients/:id", middleware.Authorized(), controller.GetUserClinicals)
+
+			clinical.GET("/submission/:id", middleware.Authorized(), controller.GetClinicalSubmissions)
+
 			clinical.POST("/:id", middleware.Authorized(), controller.AddUserClinical)
 			clinical.DELETE("/:id", middleware.Authorized(), controller.RemoveUserClinical)
 		}

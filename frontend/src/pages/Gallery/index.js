@@ -9,6 +9,7 @@ import { ContainerSubmissions, PageContainer } from "./styles";
 import { submissionUrl } from "../../resources/constants.js";
 import { useNavigate } from "react-router-dom";
 import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
+import PageLayout from "../../components/PageLayout";
 
 const Gallery = () => {
   const [media, setMedia] = useState([]);
@@ -75,16 +76,16 @@ const Gallery = () => {
   if (!isLoading && !submissions) {
     return (
       <>
-      <Header />
+      <PageLayout>
       <ToastContainer />
-      <Footer />
+      </PageLayout>
       </>
     )
   }
 
   return (
     <>
-    <PageContainer>
+    <PageLayout>
       <Header />
       <ToastContainer />
       <ContainerSubmissions>
@@ -107,7 +108,7 @@ const Gallery = () => {
         )}
       </ContainerSubmissions>
       <Footer />
-      </PageContainer>
+      </PageLayout>
     </>
   );
 };
