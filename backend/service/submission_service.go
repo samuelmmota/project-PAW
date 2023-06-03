@@ -72,12 +72,12 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 		return submissionResponse, err
 	}
 
-	submission.Media = fileBytes
+	/*submission.Media = fileBytes
 
 	submission.UserID = userID
-	submission = repository.InsertSubmission(submission)
+	submission = repository.InsertSubmission(submission)*/
 
-	/*imageEncrypted, err := InsertImage(fileBytes, userID)
+	imageEncrypted, err := InsertImage(fileBytes, userID)
 	if err != nil {
 		log.Fatal("Failed to encrypt image", err)
 		return submissionResponse, err
@@ -87,7 +87,7 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 	submission.Media = imageEncrypted
 
-	submission = repository.InsertSubmission(submission)*/
+	submission = repository.InsertSubmission(submission)
 
 	err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
 	if err != nil {
@@ -114,15 +114,16 @@ func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDT
 
 		return submissionResponse, nil
 	}
-	return submissionResponse, errors.New("submission do not exist")
 
-	/*imageDecrypted, err := GetImage(submissionResponse.Media, userId)
+	imageDecrypted, err := GetImage(submissionResponse.Media, userId)
 	if err != nil {
 		log.Fatal("Failed to decrypt image", err)
 		return submissionResponse, err
 	}
 
-	submissionResponse.Media = imageDecrypted*/
+	submissionResponse.Media = imageDecrypted
+
+	return submissionResponse, errors.New("submission do not exist")
 }
 
 func UpdateSubmission(submissionDTO dto.SubmissionUpdateDTO) (dto.SubmissionResponseDTO, error) {

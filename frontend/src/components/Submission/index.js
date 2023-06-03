@@ -63,6 +63,11 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       });
     }
   }
+
+  const handleButtonClick = () => {
+    
+  };
+
   /*
   First we perform a get to know if the user is the ownner of the Submission and have the right to edit it
   */
@@ -119,28 +124,28 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       <ContainerSubmission>
       <DateText>
   {displayMonth !== "" && displayDay !== "" && displayYear !== "" ? (
-    <>Date: {displayMonth}, {displayDay}, {displayYear}</>
+    <><b>Date: </b> {displayMonth}, {displayDay}, {displayYear}</>
   ) : (
-    <>Date: {displayDate}</>
+    <><b>Date: </b> {displayDate}</>
   )}
 </DateText>
 
       <ContainerImage>
         {media_type === "image" && (
-           <ImageSubmission
-             key={id}
-            src={`data:image/jpeg;base64,${media}`}
-             alt="Image"
-          />
-                )}
+            <ImageSubmission
+                key={id}
+                src={`data:image/jpeg;base64,${media}`}
+                alt="Image"
+              />
+        )}
         {media_type === "video" && (
             <VideoSubmission controls>
-       <         source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
-        </VideoSubmission>
-  )}
-</ContainerImage>
-        <p>{description}</p>
-        <TitleSubmission>{body_part}</TitleSubmission>
+              <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
+            </VideoSubmission>
+        )}
+      </ContainerImage>
+        <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
+        <TitleSubmission><b>Body Part: </b>{body_part}</TitleSubmission>
         <center>
             <ButtonContainer>
               <Button type="button" onClick={editSubmission}>
