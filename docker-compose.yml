@@ -20,7 +20,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     restart: on-failure
     volumes:
-     - D:\GolandProjects\PAW\project-PAW/backend/mariadb:/var/lib/mysql
+     - ${PWD}/backend/mariadb:/var/lib/mysql
     ports:
       - 3306:3306
   

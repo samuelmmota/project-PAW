@@ -10,15 +10,10 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-
+docker-compose.yml
 # Dependency directories (remove the comment below to include it)
-<<<<<<< HEAD
 # vendor/
 
 backend/mariadb/
 frontend/node_modules/
 
-=======
-backend/mariadb/
-frontend/node_modules/
->>>>>>> e6e5617256e530c5290e078267bdfcac713fc57e
