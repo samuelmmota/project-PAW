@@ -38,7 +38,9 @@ func GetSubmission(submissionID uint64) (entity.Submission, error) {
 
 func UpdateSubmission(submission entity.Submission) (entity.Submission, error) {
 
-	if _, err := GetSubmission(submission.ID); err == nil {
+	if oldSubmission, err := GetSubmission(submission.ID); err == nil {
+		submission.Media = oldSubmission.Media
+		submission.MediaType = oldSubmission.MediaType
 		config.Db.Save(&submission)
 		config.Db.Preload("User").Find(&submission)
 		return submission, nil

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"log"
 	"pawAPIbackend/dto"
@@ -32,6 +34,12 @@ func GetAllUsers() []dto.UserResponseDTO {
 
 func Register(user entity.User) (entity.User, error) {
 	err := EncryptPassword(&user)
+	key, err := GenerateRandomString(20)
+	if err != nil {
+		log.Fatal("Failed to generate key:", err)
+		return entity.User{}, err
+	}
+	user.Key = key
 	user, err = repository.InsertUser(user)
 
 	return user, err
@@ -121,4 +129,18 @@ func EncryptPassword(user *entity.User) error {
 
 func ComparePassword(user *entity.User, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+}
+
+func GenerateRandomString(length int) (string, error) {
+	randomBytes := make([]byte, length)
+	_, err := rand.Read(randomBytes)
+	if err != nil {
+		return "", err
+	}
+
+	randomString := base64.RawURLEncoding.EncodeToString(randomBytes)
+
+	randomString = randomString[:length]
+
+	return randomString, nil
 }

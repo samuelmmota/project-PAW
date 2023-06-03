@@ -12,23 +12,19 @@ import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constant
 import {
   ContainerSubmission,
   ContainerInfosSubmission,
-  InputChangeImage,
   ContainerInputs,
   InputEditSubmissionDescription,
-  InputEditSubmission,
   ContainerButtonAdd,
   ButtonAddSubmission,
 } from "./styles";
 import { submissionUrl } from "../../resources/constants.js";
 import PageLayout from "../../components/PageLayout";
 
-
 const AddSubmission = () => {
   const navigate = useNavigate();
 
   const body_part = useRef();
   const description = useRef();
-  const date = useRef();
   const media = useRef();
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -64,44 +60,26 @@ const AddSubmission = () => {
     formData.append("description", description.current.value);
     formData.append("media", media.current.files[0]);
 
-
-   /* const newSubmission = {
-      body_part: body_part.current.value,
-      description: description.current.value,
-  
-      media: media.current.value,
-      //media_type: ""
-    };
-
-    if (body_part.current.value !== "") {
-      newSubmission.body_part = "Unknown";
-    }*/
-
     const file = media.current.files[0];
     var media_type = "";
 
     if (file) {
       // Check the file type
-    if (file.type.startsWith("image/")) {
-      media_type = "image";
-     
-    } else if (file.type.startsWith("video/")) {
-      //newSubmission.media_type = "video";
-      media_type = "video";
-    } else {
-      toast.error("Invalid file type. Discarding file.", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+      if (file.type.startsWith("image/")) {
+        media_type = "image";
+      } else if (file.type.startsWith("video/")) {
+        media_type = "video";
+      } else {
+        toast.error("Invalid file type. Discarding file.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        return;
+      }
 
       formData.append("media_type", media_type);
       formData.append("file", file);
-      formData.append("date", selectedDate); 
-
-      //newSubmission.file = formData;
+      formData.append("date", selectedDate);
     }
-
 
     const url = submissionUrl;
     const token = sessionStorage.getItem("token");
