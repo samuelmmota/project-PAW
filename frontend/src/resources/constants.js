@@ -15,7 +15,8 @@ export const images_test = `${apiUrl}/image`;
 export const evaluateUrl = `${apiUrl}/evaluate`;
 export const clinicalUrl = `${apiUrl}/clinical/`;
 export const patientUrl = `${apiUrl}/patient/`;
-
+export const messageUrl = `${apiUrl}/message/`;
+export const messageAddUrl = `${apiUrl}/message`;
 //Colors
 export const primaryColor = "#1A76D2"
 export const secondaryColor = "#009DE7";

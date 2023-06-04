@@ -39,3 +39,10 @@ func CreateClinical(clinical entity.Clinical) error {
 
 	return nil
 }
+
+func GetCLinical(userClinicalID uint64, userPatientID uint64) (entity.Clinical, error) {
+	var clinical entity.Clinical
+	//config.Db.Preload("Clinical").Preload("Patient").Where("clinical_id = ?", userClinicalID).Find(&clinicals)
+	err := config.Db.Where("patient_id = ? AND clinical_id = ?", userPatientID, userClinicalID).First(&clinical).Error
+	return clinical, err
+}

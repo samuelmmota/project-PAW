@@ -8,13 +8,12 @@ import { Container, Typography, TextField, Button, List, ListItem, ListItemText,
 import { submissionUrl, messageUrl } from "../../resources/constants.js";
 import { ContainerSubmission, TitleSubmission, ContainerImage, ImageSubmission, VideoSubmission } from "./../../components/Submission/styles.js";
 
-const EvaluateSubmission = () => {
+const ViewSubmission = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [submission, setSubmission] = useState({});
     const [messages, setMessages] = useState([]);
-    const [comment, setComment] = useState("");
 
     useEffect(() => {
         fetchSubmission();
@@ -52,43 +51,6 @@ const EvaluateSubmission = () => {
             });
         }
     }
-
-    const handleMessageChange = (event) => {
-        setComment(event.target.value);
-    };
-
-    const handleSubmitMessage = async (event) => {
-        event.preventDefault();
-
-        const token = sessionStorage.getItem("token");
-        const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        const userID = decodedToken.user_id;
-        const url = messageUrl;
-
-        const body = {
-            date: new Date().toString(), // Update with the desired date value
-            message_content: comment,
-            submission_id: parseInt(id), // Update with the desired submission_id value
-            clinical_id: parseInt(userID), // Update with the desired clinical_id value
-        };
-
-        try {
-            const response = await Axios.post(url, body, {
-                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-            });
-            const newMessage = response.data;
-            setMessages([...messages, newMessage]);
-            setComment("");
-            toast.success("Message added successfully", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-        } catch (error) {
-            console.error("Error adding message:", error);
-            toast.error(error.response.data.error, {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-        }
-    };
 
     return (
         <PageLayout>
@@ -134,26 +96,10 @@ const EvaluateSubmission = () => {
                         </React.Fragment>
                     ))}
                 </List>
-
-                <Typography variant="h5">Add Comment</Typography>
-                <form onSubmit={handleSubmitMessage}>
-                    <TextField
-                        label="Comment"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        fullWidth
-                        value={comment}
-                        onChange={handleMessageChange}
-                    />
-                    <Button variant="contained" color="primary" type="submit">
-                        Add Comment
-                    </Button>
-                </form>
             </Container>
             <br /><br /><br /><br />
         </PageLayout>
     );
 };
 
-export default EvaluateSubmission;
+export default ViewSubmission;

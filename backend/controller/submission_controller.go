@@ -90,12 +90,12 @@ func GetSubmission(c *gin.Context) {
 		return
 	}
 
-	if !service.IsAllowedToEdit(userID, submissionID) {
+	/*if !service.IsAllowedToEdit(userID, submissionID) {
 		c.JSON(401, gin.H{
 			"message": "you do not have the permission - you are not the owner of this submission",
 		})
 		return
-	}
+	}*/
 
 	c.JSON(200, gin.H{
 		"message":    "select submission",

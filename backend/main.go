@@ -67,10 +67,19 @@ func main() {
 			clinical.POST("/:id", middleware.Authorized(), controller.AddUserClinical)
 			clinical.DELETE("/:id", middleware.Authorized(), controller.RemoveUserClinical)
 		}
+
 		//for clinicals -> use clinical ID
-		patients := v1.Group("/patient")
+		patient := v1.Group("/patient")
 		{
-			patients.GET("/:id", middleware.Authorized(), controller.GetPatientsSubmissions)
+			patient.GET("/:id", middleware.Authorized(), controller.GetPatientsSubmissions)
+		}
+
+		message := v1.Group("/message")
+		{
+			message.GET("/:id", middleware.Authorized(), controller.GetMessages)
+			message.POST("/", middleware.Authorized(), controller.AddMessage)
+
+			//message.DELETE("/:id", middleware.Authorized(), controller.DeleteMessage)
 		}
 
 		//TEST

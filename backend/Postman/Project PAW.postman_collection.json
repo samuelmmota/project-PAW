@@ -32,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"samuel\",\n    \"password\": \"123\",\n    \"email\": \"samuel@mail.com\"\n}",
+							"raw": "{\n    \"password\": \"samuel\",\n    \"email\": \"samuelmota@mail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -59,7 +59,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NDQ1NDIwMywiaWF0IjoxNjg0NDUyNDAzLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.ou7VRJ7s7fJ1ocHrDMoY-KqFTtOjEe0hLIjG9miHNDQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NTgwNTkxOCwiaWF0IjoxNjg1ODA0MTE4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.jaS4fP0ChEIVZrz3j8l1scsKx80dOhsFhfcH4jUgU9c",
 									"type": "string"
 								}
 							]
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Samuel Edited\",\n    \"password\": \"123456789\",\n    \"email\": \"sam@mail.com\"\n}",
+							"raw": "{\n\n  \"isClinical\" : \"true\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,7 +96,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NDQ1NDIwMywiaWF0IjoxNjg0NDUyNDAzLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.ou7VRJ7s7fJ1ocHrDMoY-KqFTtOjEe0hLIjG9miHNDQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NTU3MDQzOCwiaWF0IjoxNjg1NTY4NjM4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.xjz5q6yA7ibcD84Av7LZOvpeHFFCKnDp7MbAeQ3ZxaE",
 									"type": "string"
 								}
 							]
@@ -156,7 +156,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"samuel@mail.com\",\n    \"password\": \"123\"\n}",
+							"raw": "{\n    \"email\": \"doctor@mail.com\",\n    \"password\": \"doctor\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,6 +171,519 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/auth/refreshtoken/",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"auth",
+								"refreshtoken",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Submission",
+			"item": [
+				{
+					"name": "Get submission by id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTEiLCJleHAiOjE2ODU3NTI2MjMsImlhdCI6MTY4NTc1MDgyMywiaXNzIjoiSVNTVUVSIEJPT0sgQVBJIn0.slEtXdmMh1SomTvd5NHnQSc1FxMUeS3nttqasQ1gd_w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/submission/3",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"submission",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert submission",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NDk2Nzc4MywiaWF0IjoxNjg0OTY1OTgzLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.5-1fHfnwy3FdMfQoHYne40HOiyIkMddxL0mCfqnnw4s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "media",
+									"contentType": "",
+									"type": "file",
+									"src": "/Users/samuelmota/Desktop/Screenshots/Screenshot 2023-05-06 at 04.05.42.png"
+								},
+								{
+									"key": "date",
+									"value": "2022",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "description body ",
+									"type": "default"
+								},
+								{
+									"key": "body_part",
+									"value": "Head",
+									"type": "default"
+								},
+								{
+									"key": "media_type",
+									"value": "image",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_GO_PAW}}/submission",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"submission"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "ed",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all submissions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMyIsImV4cCI6MTY4NTgzOTk5OCwiaWF0IjoxNjg1ODM4MTk4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.aKGMEVpZOrlA8HaNiQuG_-OjRojPrS6Avdl5yDmDOKA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/submission",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"submission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete submission by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NDU0ODM0OCwiaWF0IjoxNjg0NTQ2NTQ4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.rtG2i4cgNxn9saUfCN1MxW7l65KNCbzQK17afcOO-YY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/submission/1",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"submission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update submission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTEiLCJleHAiOjE2ODU3NTI2MjMsImlhdCI6MTY4NTc1MDgyMywiaXNzIjoiSVNTVUVSIEJPT0sgQVBJIn0.slEtXdmMh1SomTvd5NHnQSc1FxMUeS3nttqasQ1gd_w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"mybook edited 4\",\n    \"description\": \"description edited bj\",\n    \"body_part\": \"book_cover edited fghjk\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_GO_PAW}}/submission/3",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"submission",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Image (Testing)",
+			"item": [
+				{
+					"name": "Insert Images",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/samuelmota/Desktop/IMG_20220520_164530.jpg"
+								},
+								{
+									"key": "mediaType",
+									"value": "video",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_GO_PAW}}/image",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "Get Patients of clinical ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NTg5MDE5OCwiaWF0IjoxNjg1ODg4Mzk4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.V2mqvihXTc7Mx3l7xdFQp1pEAZVFVgnIlt6Pc6Bj-CE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/patient/2",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"patient",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clinicals",
+			"item": [
+				{
+					"name": "Get Clinicals of patient ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY4NTgzNzIyMiwiaWF0IjoxNjg1ODM1NDIyLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.i2hgRqXx_p_yKvsNoRlikYeBw0LYWhtWcc0OsQBHc4E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/clinical/2",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"clinical",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Clinicals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NTgwMjk0NSwiaWF0IjoxNjg1ODAxMTQ1LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.CpRaDwr0wkFlGPnOJyu9ycfRmnNMGV_fXJoCnZCo5lU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"clinical_email\": \"doctor7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_GO_PAW}}/user/clinical/2",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"user",
+								"clinical",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Clinical",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/user/clinical/1",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"user",
+								"clinical",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Clinical Submissions/: patient ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NTgzMTY4OCwiaWF0IjoxNjg1ODI5ODg4LCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.GszoxigE7B9A1d6Yv8PL-ttM7wGDfOmYRxlL29fi7-g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/user/clinical/submission/1",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"user",
+								"clinical",
+								"submission",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get All Messages /:submissionid (for owner or clinicals)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NTg5NjExMiwiaWF0IjoxNjg1ODk0MzEyLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.hYCJ3YcV_ixjjWYGFREmTt1wzqFUWgLoNjUPuTS6eV4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_GO_PAW}}/message/5",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"message",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Message (only for clinicals)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY4NTg5NjExMiwiaWF0IjoxNjg1ODk0MzEyLCJpc3MiOiJJU1NVRVIgQk9PSyBBUEkifQ.hYCJ3YcV_ixjjWYGFREmTt1wzqFUWgLoNjUPuTS6eV4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"Hoje\",\n    \"message_content\": \"Ish ó filho esas todo fdd\",\n    \"submission_id\": 5,\n    \"clinical_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_GO_PAW}}/message",
+							"host": [
+								"{{API_GO_PAW}}"
+							],
+							"path": [
+								"message"
 							]
 						}
 					},
