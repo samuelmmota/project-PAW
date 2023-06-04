@@ -331,3 +331,20 @@ func getFileExtension(mediaType string) string {
 	}
 	return ""
 }
+
+func GetAllResearchSubmissions() []dto.SubmissionExportResearcherDTO {
+	var submissionResponse []dto.SubmissionExportResearcherDTO
+	submissions := repository.GetAllResearchSubmissions()
+
+	for _, user := range submissions {
+		response := dto.SubmissionExportResearcherDTO{}
+		err := smapping.FillStruct(&response, smapping.MapFields(&user))
+		if err != nil {
+			log.Fatal("failed to map submission to response ", err)
+			return submissionResponse
+		}
+		submissionResponse = append(submissionResponse, response)
+	}
+
+	return submissionResponse
+}

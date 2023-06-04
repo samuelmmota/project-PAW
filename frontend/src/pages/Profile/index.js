@@ -54,6 +54,7 @@ const Profile = () => {
       setUser({
         user_email: userData.email,
         user_is_clinical: userData.isClinical,
+        user_is_export_to_research: userData.exportToReasearcher,
       });
       console.log(response);
     } catch (err) {
@@ -150,14 +151,15 @@ const Profile = () => {
     }
   }
 
+  console.log(user);
   return (
     <PageLayout>
       <ToastContainer />
       {isLoggedIn && (
         <User
-          userName={user.user_name}
           userEmail={user.user_email}
           isClinical={user.user_is_clinical}
+          isExportToResearchSet={user.user_is_export_to_research}
         />
       )}
       {!user.user_is_clinical && (

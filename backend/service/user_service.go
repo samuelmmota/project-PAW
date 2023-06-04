@@ -90,6 +90,14 @@ func UpdateProfile(userDto dto.UserUpdateDTO) (dto.UserResponseDTO, error) {
 		user.IsClinical = isClinical
 	}
 
+	if userDto.ExportToReasearcher != "" {
+		exportToReasearcher, err := strconv.ParseBool(userDto.ExportToReasearcher)
+		if err != nil {
+			return dto.UserResponseDTO{}, errors.New("Invalid value for ExportToReasearcher")
+		}
+		user.ExportToReasearcher = exportToReasearcher
+	}
+
 	userResponse := dto.UserResponseDTO{}
 
 	if user, err = repository.UpdateUser(user); err == nil {

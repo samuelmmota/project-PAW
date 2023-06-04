@@ -17,6 +17,8 @@ export const clinicalUrl = `${apiUrl}/clinical/`;
 export const patientUrl = `${apiUrl}/patient/`;
 export const messageUrl = `${apiUrl}/message/`;
 export const messageAddUrl = `${apiUrl}/message`;
+export const exportToReaserchURL = `${apiUrl}/export/`;
+
 //Colors
 export const primaryColor = "#1A76D2"
 export const secondaryColor = "#009DE7";

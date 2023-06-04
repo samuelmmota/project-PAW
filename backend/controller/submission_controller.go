@@ -247,3 +247,17 @@ func GetAllImages(c *gin.Context) {
 
 	c.JSON(http.StatusOK, images)
 }
+
+func ExportForResearch(c *gin.Context) {
+
+	submissions := service.GetAllResearchSubmissions()
+
+	if submissions == nil {
+		submissions = []dto.SubmissionExportResearcherDTO{}
+	}
+
+	c.JSON(200, gin.H{
+		"message":     "select Research submissions",
+		"submissions": submissions,
+	})
+}

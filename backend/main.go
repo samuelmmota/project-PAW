@@ -96,6 +96,11 @@ func main() {
 			submission.DELETE("/:id", middleware.Authorized(), controller.DeleteSubmission)
 		}
 
+		export := v1.Group("/export")
+		{
+			export.GET("/", controller.ExportForResearch)
+		}
+
 	}
 	router.Run(":3000")
 }
