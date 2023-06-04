@@ -1,8 +1,9 @@
 import { Box, Typography, Link } from "@mui/material";
 import { styled } from "@mui/system";
+import { tertiaryColor } from "../../resources/constants.js";
 
 const CustomFooter = styled(Box)`
-  background-color: #f5f5f5;
+  background-color: ${tertiaryColor};
   padding: 16px;
   text-align: center;
   position: fixed;

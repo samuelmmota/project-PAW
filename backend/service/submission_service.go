@@ -13,6 +13,7 @@ import (
 	"pawAPIbackend/repository"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/scrypt"
 
@@ -35,6 +36,15 @@ func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 			log.Fatal("failed to map submission to response ", err)
 			return submissionResponse
 		}
+
+		imageDecrypted, err := GetImage(response.Media, userID)
+		if err != nil {
+			log.Fatal("Failed to decrypt image", err)
+			return submissionResponse
+		}
+
+		response.Media = imageDecrypted
+
 		submissionResponse = append(submissionResponse, response)
 	}
 
@@ -57,6 +67,12 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 		return submissionResponse, err
 	}
 
+	newDate, err := ConverterDate(submissionCreateDTO.Date)
+	if err != nil {
+		log.Fatal("Wrong format type inserted!", err)
+		return submissionResponse, err
+	}
+
 	//TEST code
 	// Open the uploaded file
 
@@ -74,11 +90,6 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 		return submissionResponse, err
 	}
 
-	/*submission.Media = fileBytes
-
-	submission.UserID = userID
-	submission = repository.InsertSubmission(submission)*/
-
 	imageEncrypted, err := InsertImage(fileBytes, userID)
 	if err != nil {
 		log.Fatal("Failed to encrypt image", err)
@@ -88,6 +99,8 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	submission.UserID = userID
 
 	submission.Media = imageEncrypted
+
+	submission.Date = newDate
 
 	submission = repository.InsertSubmission(submission)
 
@@ -219,8 +232,8 @@ func encryptImage(image []byte, userKey string) ([]byte, error) {
 	encryptedData := aesGCM.Seal(nil, nonce, image, nil)
 
 	// Prepend the salt and nonce to the encrypted data
-	encryptedData = append(salt, encryptedData...)
 	encryptedData = append(nonce, encryptedData...)
+	encryptedData = append(salt, encryptedData...)
 
 	// Return the encrypted data
 	return encryptedData, nil
@@ -234,7 +247,7 @@ func decryptImage(encryptedData []byte, userKey string) ([]byte, error) {
 	nonce := encryptedData[saltSize : saltSize+encryptionNonceSize]
 	cipherText := encryptedData[saltSize+encryptionNonceSize:]
 
-	// Derive the key from the user's password and the stored salt
+	// Derive the key from the user's key and the stored salt
 	key, err := scrypt.Key([]byte(userKey), salt, 16384, 8, 1, 32)
 	if err != nil {
 		return nil, err
@@ -262,6 +275,7 @@ func decryptImage(encryptedData []byte, userKey string) ([]byte, error) {
 	return decryptedData, nil
 }
 
+
 func InsertImage(image []byte, userId uint64) ([]byte, error) {
 
 	user, err := repository.GetUser(userId)
@@ -269,7 +283,7 @@ func InsertImage(image []byte, userId uint64) ([]byte, error) {
 		log.Fatal("failed to get user ", err)
 		return nil, err
 	}
-
+	
 	key := user.Key
 
 	//Encrypt the image data using the user's key
@@ -332,3 +346,32 @@ func getFileExtension(mediaType string) string {
 	}
 	return ""
 }
+
+func ConverterDate(date string) (string, error) {
+
+	newInputDate:= removeSubstring(date)
+	// Define o layout de entrada
+	layoutEntrada := "Mon Jan 2 2006 15:04:05"
+	// Converte a string para um objeto time.Time
+	t, err := time.Parse(layoutEntrada, newInputDate)
+	if err != nil {
+		return "", err
+	}
+
+	// Define o layout de saída
+	layoutSaida := "2006-01-02T15:04:05.000Z"
+	// Formata o objeto time.Time no formato desejado
+	newDate := t.UTC().Format(layoutSaida)
+
+	return newDate, nil
+}
+
+func removeSubstring(str string) string {
+	index := strings.Index(str, " GMT")
+	if index != -1 {
+		newString := str[:index]
+		return newString
+	}
+	return str
+}
+
