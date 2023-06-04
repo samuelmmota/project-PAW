@@ -1,23 +1,16 @@
 import styled from "styled-components";
 import { primaryColor, secondaryColor } from "../../resources/constants.js";
-
-export const Button = styled.button`
-  background-color: ${primaryColor};
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  font-family: "Anton", sans-serif;
-  font-size: 18px;
-  padding: 8px 20px;
-  margin: 8px;
-  transition: 0.3s;
-`;
+import ReactPlayer from "react-player";
+import { Container } from "@mui/material";
 
 export const ContainerSubmission = styled.div`
-  padding: 20px;
-  padding-bottom: 0;
-  width: fit-content;
+width: 300px; /* Set the desired fixed width */
+height: 400px; /* Set the desired fixed height */
+background-color: #f5f5f5; /* Replace with your desired shade of gray */
+padding: 20px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 `;
 
 export const TitleSubmission = styled.p`
@@ -25,24 +18,21 @@ export const TitleSubmission = styled.p`
   margin-bottom: 0;
 `;
 
-export const ContainerImage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
+export const ContainerImage = styled(Container)`
+display: flex;
+align-items: center;
+justify-content: center;
+height: 200px; /* Set the desired height for the media container */
 `;
 
 export const ImageSubmission = styled.img`
-  margin: 8px;
-  max-width: 60%;
-  width: 300px;
-  height: 225px;
+max-width: 100%;
+max-height: 100%;
 `;
 
 export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+display: flex;
+flex-direction: column;
 `;
 
 export const Title = styled.h1`
@@ -60,9 +50,19 @@ export const DateText = styled.p`
   margin-top: 10px;
 `;
 
-export const VideoSubmission = styled.video`
-  margin: 8px;
-  max-width: 60%;
-  width: 300px;
-  height: 225px;
+export const VideoSubmission = styled(ReactPlayer)`
+max-width: 100%;
+max-height: 100%;
+`;
+
+export const Button = styled.button`
+  background-color: ${primaryColor};
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Anton", sans-serif;
+  font-size: 18px;
+  padding: 8px 20px;
+  margin-bottom: 10px;
 `;

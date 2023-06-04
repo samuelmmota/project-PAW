@@ -1,4 +1,4 @@
-/*import React from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ContainerSubmission,
@@ -14,73 +14,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Axios from "axios";
 import { submissionUrl } from "../../resources/constants.js";
-*/
-import { useNavigate } from "react-router-dom";
-
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Axios from "axios";
-import { submissionUrl } from "../../resources/constants.js";
-import ReactPlayer from "react-player";
-import { Container } from "@mui/material";
-
 import styled from "styled-components";
 import { primaryColor } from "../../resources/constants.js";
-
-const ContainerSubmission = styled.div`
-  width: 300px; /* Set the desired fixed width */
-  height: 400px; /* Set the desired fixed height */
-  background-color: #f5f5f5; /* Replace with your desired shade of gray */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const TitleSubmission = styled.p`
-  text-align: center;
-  margin-bottom: 0;
-`;
-
-const ContainerImage = styled(Container)`
-display: flex;
-align-items: center;
-justify-content: center;
-height: 200px; /* Set the desired height for the media container */
-`;
-
-const ImageSubmission = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
-
-const VideoSubmission = styled(ReactPlayer)`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
-const Description = styled.p`
-  margin-bottom: 10px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button`
-  background-color: ${primaryColor};
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  font-family: "Anton", sans-serif;
-  font-size: 18px;
-  padding: 8px 20px;
-  margin-bottom: 10px;
-`;
 
 const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions }) => {
   const token = sessionStorage.getItem("token");
@@ -129,6 +64,11 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       });
     }
   }
+
+  const handleButtonClick = () => {
+    
+  };
+
   /*
   First we perform a get to know if the user is the ownner of the Submission and have the right to edit it
   */
@@ -155,31 +95,66 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
     }
 
   }
-
+ /* return (
+    <>
+     <ToastContainer />
+      <ContainerSubmission>
+        <TitleSubmission>{bodyPart}</TitleSubmission>
+        <ContainerImage>
+          <ImageSubmission src={image} />
+        </ContainerImage>
+        <center>
+          {description}
+          {isLoggedIn && owner && (
+            <ButtonContainer>
+              <Button type="button" onClick={editSubmission}>
+              Update
+            </Button>
+            <Button type="button" onClick={deleteSubmission}>
+              Delete
+            </Button>
+            </ButtonContainer>
+          )}
+        </center>
+      </ContainerSubmission>
+    </>
+  );*/
   return (
-    <ContainerSubmission>
-      <TitleSubmission>{body_part}</TitleSubmission>
-      <ContainerImage>
+      <ContainerSubmission>
+        <DateText>
+          {displayMonth !== "" && displayDay !== "" && displayYear !== "" ? (
+            <><b>Date: </b> {displayMonth}, {displayDay}, {displayYear}</>
+          ) : (
+            <><b>Date: </b> {displayDate}</>
+          )}
+        </DateText>
+        <ContainerImage>
           {media_type === "image" && (
-            <ImageSubmission
-              key={id}
-              src={`data:image/jpeg;base64,${media}`}
-              alt="Image"
-            />
+              <ImageSubmission
+                  key={id}
+                  src={`data:image/jpeg;base64,${media}`}
+                  alt="Image"
+                />
           )}
           {media_type === "video" && (
-            <VideoSubmission
-              url={`data:video/mp4;base64,${media}`}
-              controls
-            />
+              <VideoSubmission controls>
+                <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
+              </VideoSubmission>
           )}
         </ContainerImage>
-      <Description>{description}</Description>
-      <ButtonContainer>
-        <Button onClick={editSubmission}>Update</Button>
-        <Button onClick={deleteSubmission}>Delete</Button>
-      </ButtonContainer>
-    </ContainerSubmission>
+        <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
+        <TitleSubmission><b>Body Part: </b>{body_part}</TitleSubmission>
+        <center>
+            <ButtonContainer>
+              <Button type="button" onClick={editSubmission}>
+                Update
+              </Button>
+              <Button type="button" onClick={deleteSubmission}>
+                Delete
+              </Button>
+            </ButtonContainer>
+        </center>
+      </ContainerSubmission>
   );
 };
 

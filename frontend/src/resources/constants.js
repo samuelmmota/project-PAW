@@ -18,6 +18,6 @@ export const clinicalUrl = `${apiUrl}/user/clinical/`;
 //Colors
 export const primaryColor = "#1A76D2"
 export const secondaryColor = "#009DE7";
-export const tertiaryColor = "#00BED8";
+export const tertiaryColor = "#B0C4DE";
 export const quaternaryColor = "#00D9B1";
 //Integers
