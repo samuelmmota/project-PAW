@@ -1,4 +1,4 @@
-/*import React from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ContainerSubmission,
@@ -9,20 +9,12 @@ import {
   ButtonContainer,
   DateText,
   VideoSubmission,
+  ButtonFeedback,
 } from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Axios from "axios";
 import { submissionUrl } from "../../resources/constants.js";
-*/
-import { useNavigate } from "react-router-dom";
-
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Axios from "axios";
-import { submissionUrl } from "../../resources/constants.js";
-import { Title, Button, ButtonContainer, VideoSubmission, ImageSubmission, Description, ContainerSubmission, TitleSubmission, ContainerImage,ButtonFeedback } from "./styles";
 import styled from "styled-components";
 import { primaryColor } from "../../resources/constants.js";
 import { element } from "prop-types";
@@ -75,6 +67,11 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       });
     }
   }
+
+  const handleButtonClick = () => {
+
+  };
+
   /*
   First we perform a get to know if the user is the ownner of the Submission and have the right to edit it
   */
@@ -112,7 +109,13 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
 
   return (
     <ContainerSubmission>
-      <TitleSubmission>{body_part}</TitleSubmission>
+      <DateText>
+        {displayMonth !== "" && displayDay !== "" && displayYear !== "" ? (
+          <><b>Date: </b> {displayMonth}, {displayDay}, {displayYear}</>
+        ) : (
+          <><b>Date: </b> {displayDate}</>
+        )}
+      </DateText>
       <ContainerImage>
         {media_type === "image" && (
           <ImageSubmission
@@ -122,25 +125,27 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
           />
         )}
         {media_type === "video" && (
-          <VideoSubmission
-            url={`data:video/mp4;base64,${media}`}
-            controls
-          />
+          <VideoSubmission controls>
+            <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
+          </VideoSubmission>
         )}
       </ContainerImage>
-      <Description>{description}</Description>
-      <ButtonContainer>
-        {isClinicalViewing == null || isClinicalViewing == false ? (
-          <>
-            <Button onClick={editSubmission}>Update</Button>
-            <Button onClick={deleteSubmission}>Delete</Button>
-            <ButtonFeedback onClick={viewSubmission}> View Feedbacks</ButtonFeedback>
-          </>
-        ) : (
-          <Button onClick={evaluateSubmission}>Evaluate</Button>
-        )}
+      <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
+      <TitleSubmission><b>Body Part: </b>{body_part}</TitleSubmission>
+      <center>
+        <ButtonContainer>
+          {isClinicalViewing == null || isClinicalViewing == false ? (
+            <>
+              <Button onClick={editSubmission}>Update</Button>
+              <Button onClick={deleteSubmission}>Delete</Button>
+              <ButtonFeedback onClick={viewSubmission}> View Feedbacks</ButtonFeedback>
+            </>
+          ) : (
+            <Button onClick={evaluateSubmission}>Evaluate</Button>
+          )}
 
-      </ButtonContainer>
+        </ButtonContainer>
+      </center>
     </ContainerSubmission>
   );
 };

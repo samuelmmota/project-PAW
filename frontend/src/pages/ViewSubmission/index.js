@@ -28,6 +28,7 @@ const ViewSubmission = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setSubmission(response.data.submission);
+            console.log(response.data.submission);
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message, {

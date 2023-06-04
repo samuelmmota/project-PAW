@@ -50,10 +50,6 @@ export const VideoSubmission = styled(ReactPlayer)`
   max-height: 100%;
 `;
 
-export const Description = styled.p`
-  margin-bottom: 10px;
-`;
-
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;

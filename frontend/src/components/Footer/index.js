@@ -3,9 +3,10 @@ import { styled } from "@mui/system";
 import Axios from "axios";
 import { exportToReaserchURL } from "../../resources/constants.js";
 import { saveAs } from "file-saver";
+import { tertiaryColor } from "../../resources/constants.js";
 
 const CustomFooter = styled(Box)`
-  background-color: #f5f5f5;
+  background-color: ${tertiaryColor};
   padding: 16px;
   text-align: center;
   position: fixed;

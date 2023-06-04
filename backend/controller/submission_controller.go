@@ -10,6 +10,8 @@ import (
 	"pawAPIbackend/service"
 	"strconv"
 
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -61,6 +63,8 @@ func InsertSubmission(c *gin.Context) {
 	}
 	//vai buscar ao token(conveertido em string nos parematros) to jwt token
 	userID, _ := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+
+	fmt.Println("Add Date : ",submissionCreateDTO.Date)
 
 	submission, err := service.InsertSubmission(submissionCreateDTO, multipartFile, userID)
 	if err != nil {
@@ -124,6 +128,8 @@ func UpdateSubmission(c *gin.Context) {
 		})
 		return
 	}
+
+	fmt.Println("Update Date : ",submission.Date)
 
 	submission.ID = submissionID
 	submission.UserID = userID
