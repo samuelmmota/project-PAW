@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,12 +7,14 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import User from "../../components/User";
 import styled from "styled-components";
+import { FilterItem, FilterLabel,FilterContainer,ContainerSubmissions} from "./../Gallery/styles";
 
 import PageLayout from "../../components/PageLayout";
-import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
+import { evaluateUrl, loginUrl, refreshTokenUrl, patientUrl } from "../../resources/constants.js";
 import { Title, Form } from "./styles";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Submission from "../../components/Submission";
 
 const Evaluate = () => {
   const token = sessionStorage.getItem("token");
@@ -20,6 +22,11 @@ const Evaluate = () => {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = React.useState(0);
   const [patients, setPatients] = React.useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedBodyPart, setSelectedBodyPart] = useState("");
+  const [descriptionFilter, setDescriptionFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     RefreshToken();
@@ -45,10 +52,18 @@ const Evaluate = () => {
   }
 
   async function fetchPatients() {
-    // Fetch the patients data from the API
+    console.log("fetch Patietns");
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const userID = decodedToken.user_id;
+    const url = patientUrl + userID;
+
     try {
-      const response = await Axios.get("your_api_endpoint_here");
-      setPatients(response.data);
+      const response = await Axios.get(url, {
+        headers: { "Content-Type": "application/json", Authorization: token },
+      });
+        setPatients(response.data.clinicals);
+        console.log(response.data.clinicals);
+      console.log(response);
     } catch (error) {
       console.log("Error fetching patients:", error);
     }
@@ -59,30 +74,34 @@ const Evaluate = () => {
   };
 
   return (
-    <>
-     <PageLayout>
+    <PageLayout>
       <ToastContainer />
       <Tabs value={currentTab} onChange={handleTabChange}>
-        <Tab label="Clinicals" />
-        <Tab label="Patients" />
+        {patients.map((patient, index) => (
+          <Tab key={index} label={patient.patient_email} />
+        ))}
       </Tabs>
-      {currentTab === 0 && (
-        <div>
-          {/* Render clinicals component */}
-        </div>
-      )}
-      {currentTab === 1 && (
-        <div>
-          {patients.map((patient) => (
-            <div key={patient.id}>
-              <h3>{patient.email}</h3>
-              {/* Render patient's information */}
-            </div>
+      {patients.map((patient, index) => (
+        <div key={index} hidden={currentTab !== index}>
+          <h3>{patient.email}</h3>
+          {patient.submission.map((submission, index) => (
+      <ContainerSubmissions>
+            <Submission
+              image={submission.image}
+              body_part={submission.body_part}
+              media_type={submission.media_type}
+              media={submission.media}
+              date={submission.date}
+              description={submission.description}
+              id={submission.id}
+              isClinicalViewing={true}
+              key={index}
+            />
+      </ContainerSubmissions>
           ))}
         </div>
-      )}
+      ))}
     </PageLayout>
-    </>
   );
 };
 

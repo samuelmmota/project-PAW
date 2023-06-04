@@ -60,16 +60,17 @@ func main() {
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
 
-		clinical := user.Group("/clinical")
+		//for patients -> use patient ID
+		clinical := v1.Group("/clinical")
 		{
-			clinical.GET("/:id", middleware.Authorized(), controller.GetUserClinicals)
-			clinical.GET("/clinicals/:id", middleware.Authorized(), controller.GetUserClinicals)
-			clinical.GET("/patients/:id", middleware.Authorized(), controller.GetUserClinicals)
-
-			clinical.GET("/submission/:id", middleware.Authorized(), controller.GetClinicalSubmissions)
-
+			clinical.GET("/:id", middleware.Authorized(), controller.GetClinicals)
 			clinical.POST("/:id", middleware.Authorized(), controller.AddUserClinical)
 			clinical.DELETE("/:id", middleware.Authorized(), controller.RemoveUserClinical)
+		}
+		//for clinicals -> use clinical ID
+		patients := v1.Group("/patient")
+		{
+			patients.GET("/:id", middleware.Authorized(), controller.GetPatientsSubmissions)
 		}
 
 		//TEST

@@ -9,7 +9,9 @@ import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Edituser from "../pages/EditUser";
 import Evaluate from "../pages/Evaluate";
+import EvaluateSubmission from "../pages/EvaluateSubmission";
 import { Navigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const Router = () => {
   const token = sessionStorage.getItem("token");
@@ -25,6 +27,7 @@ const Router = () => {
         <Route path="addsubmission" element={<AddSubmission />} />
         <Route path="edituser" element={<Edituser />} />
         <Route path="evaluate" element={<Evaluate />} />
+        <Route path="evaluatesubmission" element={<EvaluateSubmission />} />
         <Route path="editsubmission" element={<EditSubmission />} />
         <Route path="profile" element={<Profile />} />
       </Routes>

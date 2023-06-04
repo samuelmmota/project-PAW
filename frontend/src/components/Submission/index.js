@@ -27,6 +27,7 @@ import { Container } from "@mui/material";
 
 import styled from "styled-components";
 import { primaryColor } from "../../resources/constants.js";
+import { element } from "prop-types";
 
 const ContainerSubmission = styled.div`
   width: 300px; /* Set the desired fixed width */
@@ -82,7 +83,7 @@ const Button = styled.button`
   margin-bottom: 10px;
 `;
 
-const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions }) => {
+const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions, isClinicalViewing }) => {
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;
   // variavel usada pra fazer a navegação pelas paginas
@@ -156,6 +157,16 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
 
   }
 
+  function evaluateSubmission(element){
+      const { submissionId } = element;
+      // Pass the parameters to the EvaluateSubmission page
+      navigate("/evaluatesubmission", {
+        state: {
+          submissionId
+        },
+      });
+    }
+
   return (
     <ContainerSubmission>
       <TitleSubmission>{body_part}</TitleSubmission>
@@ -176,8 +187,15 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
         </ContainerImage>
       <Description>{description}</Description>
       <ButtonContainer>
-        <Button onClick={editSubmission}>Update</Button>
-        <Button onClick={deleteSubmission}>Delete</Button>
+        {isClinicalViewing == null || isClinicalViewing == false  ? (
+            <>
+            <Button onClick={editSubmission}>Update</Button>
+           <Button onClick={deleteSubmission}>Delete</Button>
+            </>
+        ) : (
+           <Button onClick={evaluateSubmission}>Evaluate</Button>
+        )}
+
       </ButtonContainer>
     </ContainerSubmission>
   );

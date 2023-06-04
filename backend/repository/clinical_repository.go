@@ -6,10 +6,18 @@ import (
 	"pawAPIbackend/entity"
 )
 
-func GetAllUserClinicals(userID uint64) []entity.Clinical {
-	log.Default().Println(userID)
+func GetClinicals(userPatientID uint64) []entity.Clinical {
+	log.Default().Println(userPatientID)
 	var clinicals []entity.Clinical
-	config.Db.Preload("Clinical").Preload("Patient").Where("patient_id = ?", userID).Find(&clinicals)
+	config.Db.Preload("Clinical").Preload("Patient").Where("patient_id = ?", userPatientID).Find(&clinicals)
+
+	return clinicals
+}
+
+func GetPatients(userClinicalID uint64) []entity.Clinical {
+	log.Default().Println(userClinicalID)
+	var clinicals []entity.Clinical
+	config.Db.Preload("Clinical").Preload("Patient").Where("clinical_id = ?", userClinicalID).Find(&clinicals)
 
 	return clinicals
 }

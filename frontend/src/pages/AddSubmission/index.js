@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import Axios from "axios";
@@ -101,57 +101,57 @@ const AddSubmission = () => {
 
   return (
     <>
-    <PageLayout>
-      <ToastContainer />
-      <ContainerSubmission>
-        <ContainerInfosSubmission onSubmit={addSubmission}>
-          <ContainerInputs>
-            <InputEditSubmissionDescription
-              name="descriptionSubmission"
-              placeholder="Submission description"
-              type="text"
-              id="add_submission_description"
-              required
-              ref={description}
-            />
-          <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              placeholderText="Submission date"
-              required
-            />
-            {/* Add a file input for uploading images or videos */}
-            <input
-              type="file"
-              name="file"
-              accept="image/*, video/*"
-              ref={media}
-            />
-            <select
-              name="bodyPartSubmission"
-              id="add_submission_body_part"
-              required
-              ref={body_part}
-            >
-              <option value="">Select Body Part</option>
-              <option value="Face">Face</option>
-              <option value="Head">Head</option>
-              <option value="Hand">Hand</option>
-              <option value="Feet">Feet</option>
-              <option value="Leg">Leg</option>
-              <option value="Body">Body</option>
-              <option value="Chest">Chest</option>
-              <option value="Back">Back</option>
-              <option value="Arm">Arm</option>
-              <option value="Belly">Belly</option>
-            </select>
-          </ContainerInputs>
-          <ContainerButtonAdd>
-            <ButtonAddSubmission>Add</ButtonAddSubmission>
-          </ContainerButtonAdd>
-        </ContainerInfosSubmission>
-      </ContainerSubmission>
-    </PageLayout>
+      <PageLayout>
+        <ToastContainer />
+        <ContainerSubmission>
+          <ContainerInfosSubmission onSubmit={addSubmission}>
+            <ContainerInputs>
+              <InputEditSubmissionDescription
+                name="descriptionSubmission"
+                placeholder="Submission description"
+                type="text"
+                id="add_submission_description"
+                required
+                ref={description}
+              />
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                placeholderText="Submission date"
+                required
+              />
+              {/* Add a file input for uploading images or videos */}
+              <input
+                type="file"
+                name="file"
+                accept="image/*, video/*"
+                ref={media}
+              />
+              <select
+                name="bodyPartSubmission"
+                id="add_submission_body_part"
+                required
+                ref={body_part}
+              >
+                <option value="">Select Body Part</option>
+                <option value="Face">Face</option>
+                <option value="Head">Head</option>
+                <option value="Hand">Hand</option>
+                <option value="Feet">Feet</option>
+                <option value="Leg">Leg</option>
+                <option value="Body">Body</option>
+                <option value="Chest">Chest</option>
+                <option value="Back">Back</option>
+                <option value="Arm">Arm</option>
+                <option value="Belly">Belly</option>
+              </select>
+            </ContainerInputs>
+            <ContainerButtonAdd>
+              <ButtonAddSubmission>Add</ButtonAddSubmission>
+            </ContainerButtonAdd>
+          </ContainerInfosSubmission>
+        </ContainerSubmission>
+      </PageLayout>
     </>
   );
 };

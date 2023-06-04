@@ -28,6 +28,10 @@ func GetAllSubmissions(c *gin.Context) {
 
 	submissions := service.GetAllSubmissions(userID)
 
+	if submissions == nil {
+		submissions = []dto.SubmissionResponseDTO{}
+	}
+
 	c.JSON(200, gin.H{
 		"message":     "select submissions",
 		"submissions": submissions,
