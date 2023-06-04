@@ -13,7 +13,11 @@ export const auth_registerUrl = `${apiUrl}/auth/register`;
 export const refreshTokenUrl = `${apiUrl}/auth/refreshtoken`;
 export const images_test = `${apiUrl}/image`;
 export const evaluateUrl = `${apiUrl}/evaluate`;
-export const clinicalUrl = `${apiUrl}/user/clinical/`;
+export const clinicalUrl = `${apiUrl}/clinical/`;
+export const patientUrl = `${apiUrl}/patient/`;
+export const messageUrl = `${apiUrl}/message/`;
+export const messageAddUrl = `${apiUrl}/message`;
+export const exportToReaserchURL = `${apiUrl}/export/`;
 
 //Colors
 export const primaryColor = "#1A76D2"

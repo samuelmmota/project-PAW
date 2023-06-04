@@ -1,7 +1,15 @@
 # project-PAW
 Project (PAW) Programação de Aplicações Web 2022-2023
 
-PAW 
+$Commands to Build:
+#Frontend
+npm start
+npm install
+
+#Backend
+sudo docker-compose --env-file backend/.env up 
+sudo docker-compose --env-file backend/.env up --build
+sudo docker-compose --env-file backend/.env up app database
 
 1. User Registration: The users will be able to register themselves on the website using their email address and password. Once registered, the user will be authenticated and can access the features of the website.
    [x] a. Users will navigate to the website and select the "Register" button.
@@ -22,22 +30,22 @@ PAW
    [x] b. Users will be able to view a list of their uploaded images.
 Web Application Design & Project in Systems and Networks 2
    [] c. Users will be able to select an image and view a larger version of the image along with its description.
-   [] d. Users will be able to update an image's description.
+   [x] d. Users will be able to update an image's description.
    [x] e. Users will be able to delete an image.
 
 4. Clinical Feedback: Users can authorize clinicians to view their uploaded images. Authorized clinicians can access the images and provide feedback to the patients. Multiple clinicians can be authorized to view the same patient's images. Clinicians can leave textual feedback for the patient.
    [x] a. Users will navigate to the "Clinical Feedback" page.
-   [] b. Users will select which clinicians they want to authorize to view their uploaded images.
-   [] c. Clinicians will navigate to the "Clinical Feedback" page and view the authorized patient's uploaded images.
+   [x] b. Users will select which clinicians they want to authorize to view their uploaded images.
+   [x] c. Clinicians will navigate to the "Clinical Feedback" page and view the authorized patient's uploaded images.
    [] d. Clinicians will be able to provide textual feedback for each image.
    [] e. Clinicians will be able to view their own feedback and feedback provided by other authorized clinicians.
 
 5. Image Security: All images will be encrypted using a secure mechanism so that they can only be viewed by the patient and their authorized clinicians.
    [] a. All images will be encrypted using a secure encryption mechanism before being stored in the database.
-   [] b. Only the patient and authorized clinicians will be able to view the images by logging into the web application.
+   [x] b. Only the patient and authorized clinicians will be able to view the images by logging into the web application.
    [x] c. The web application will use appropriate security measures to protect user data, such as, SSL/TLS encryption, secure password storage, and two-factor authentication.
 
 6. Future Enhancements:
    [x] a. Add support for video submissions to allow users to capture the progression of their psoriasis over time.
    [] b. Implement a feature to allow users to share their images with others for research or educational purposes, with their consent
-   [] c. Be able to relate a new image to a previous one in order to follow the clinical evolution of a given patient (timeline)
+   [(*x*)] c. Be able to relate a new image to a previous one in order to follow the clinical evolution of a given patient (timeline)

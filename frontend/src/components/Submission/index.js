@@ -9,6 +9,7 @@ import {
   ButtonContainer,
   DateText,
   VideoSubmission,
+  ButtonFeedback,
 } from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,8 +17,10 @@ import Axios from "axios";
 import { submissionUrl } from "../../resources/constants.js";
 import styled from "styled-components";
 import { primaryColor } from "../../resources/constants.js";
+import { element } from "prop-types";
 
-const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions }) => {
+
+const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions, isClinicalViewing }) => {
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;
   // variavel usada pra fazer a navegação pelas paginas
@@ -66,7 +69,7 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
   }
 
   const handleButtonClick = () => {
-    
+
   };
 
   /*
@@ -89,72 +92,61 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       toast.error(err.response.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
-    if (err.response.data.message == "token is not valid") {
-       navigate("/login");
+      if (err.response.data.message == "token is not valid") {
+        navigate("/login");
       }
     }
 
   }
- /* return (
-    <>
-     <ToastContainer />
-      <ContainerSubmission>
-        <TitleSubmission>{bodyPart}</TitleSubmission>
-        <ContainerImage>
-          <ImageSubmission src={image} />
-        </ContainerImage>
-        <center>
-          {description}
-          {isLoggedIn && owner && (
-            <ButtonContainer>
-              <Button type="button" onClick={editSubmission}>
-              Update
-            </Button>
-            <Button type="button" onClick={deleteSubmission}>
-              Delete
-            </Button>
-            </ButtonContainer>
-          )}
-        </center>
-      </ContainerSubmission>
-    </>
-  );*/
+
+  function evaluateSubmission(element) {
+    navigate(`/evaluatesubmission/${id}`);
+  }
+
+  function viewSubmission(element) {
+    navigate(`/viewsubmission/${id}`);
+  }
+
   return (
-      <ContainerSubmission>
-        <DateText>
-          {displayMonth !== "" && displayDay !== "" && displayYear !== "" ? (
-            <><b>Date: </b> {displayMonth}, {displayDay}, {displayYear}</>
+    <ContainerSubmission>
+      <DateText>
+        {displayMonth !== "" && displayDay !== "" && displayYear !== "" ? (
+          <><b>Date: </b> {displayMonth}, {displayDay}, {displayYear}</>
+        ) : (
+          <><b>Date: </b> {displayDate}</>
+        )}
+      </DateText>
+      <ContainerImage>
+        {media_type === "image" && (
+          <ImageSubmission
+            key={id}
+            src={`data:image/jpeg;base64,${media}`}
+            alt="Image"
+          />
+        )}
+        {media_type === "video" && (
+          <VideoSubmission controls>
+            <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
+          </VideoSubmission>
+        )}
+      </ContainerImage>
+      <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
+      <TitleSubmission><b>Body Part: </b>{body_part}</TitleSubmission>
+      <center>
+        <ButtonContainer>
+          {isClinicalViewing == null || isClinicalViewing == false ? (
+            <>
+              <Button onClick={editSubmission}>Update</Button>
+              <Button onClick={deleteSubmission}>Delete</Button>
+              <ButtonFeedback onClick={viewSubmission}> View Feedbacks</ButtonFeedback>
+            </>
           ) : (
-            <><b>Date: </b> {displayDate}</>
+            <Button onClick={evaluateSubmission}>Evaluate</Button>
           )}
-        </DateText>
-        <ContainerImage>
-          {media_type === "image" && (
-              <ImageSubmission
-                  key={id}
-                  src={`data:image/jpeg;base64,${media}`}
-                  alt="Image"
-                />
-          )}
-          {media_type === "video" && (
-              <VideoSubmission controls>
-                <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
-              </VideoSubmission>
-          )}
-        </ContainerImage>
-        <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
-        <TitleSubmission><b>Body Part: </b>{body_part}</TitleSubmission>
-        <center>
-            <ButtonContainer>
-              <Button type="button" onClick={editSubmission}>
-                Update
-              </Button>
-              <Button type="button" onClick={deleteSubmission}>
-                Delete
-              </Button>
-            </ButtonContainer>
-        </center>
-      </ContainerSubmission>
+
+        </ButtonContainer>
+      </center>
+    </ContainerSubmission>
   );
 };
 

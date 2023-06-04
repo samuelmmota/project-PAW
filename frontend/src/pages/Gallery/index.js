@@ -92,7 +92,6 @@ const Gallery = () => {
   return (
     <>
     <PageLayout>
-      <Header />
       <ToastContainer />
         <FilterContainer>
           <FilterItem>
@@ -186,7 +185,6 @@ const Gallery = () => {
           <p>No submissions found.</p>
         )}
       </ContainerSubmissions>
-      <Footer />
       </PageLayout>
     </>
   );

@@ -109,3 +109,10 @@ func GetEmailFromID(userID uint64) (string, error) {
 
 	return user.Email, nil
 }
+
+func GetAllResearchSubmissions() []entity.Submission {
+	var submissions []entity.Submission
+	config.Db.Preload("User").Joins("User").Where("export_to_reasearcher = ?", true).Find(&submissions)
+
+	return submissions
+}

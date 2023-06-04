@@ -11,20 +11,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetUserClinicals(c *gin.Context) {
+func GetClinicals(c *gin.Context) {
 
 	patientID, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	//userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+	userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
 	log.Default().Println("patientID= ", patientID)
 
-	/*if patientID != userID {
+	if patientID != userID {
 		c.JSON(401, gin.H{
 			"message": "error - Unauthorized",
 			"error":   "Unauthorized",
 		})
 		return
 	}
-	*/
 
 	if err != nil {
 		c.JSON(404, gin.H{
@@ -34,7 +33,12 @@ func GetUserClinicals(c *gin.Context) {
 		return
 	}
 
-	clinicals := service.GetClinicals(patientID) //userID)
+	clinicals, err := service.GetClinicals(patientID)
+
+	//Necessario pare returnar um array vazio em vez de null!!
+	if clinicals == nil {
+		clinicals = []dto.ClinicalResponseDTO{}
+	}
 
 	c.JSON(200, gin.H{
 		"message":   "selected clinicals",
@@ -111,20 +115,18 @@ func RemoveUserClinical(c *gin.Context) {
 }
 */
 
-func GetClinicalSubmissions(c *gin.Context) {
+func GetPatientsSubmissions(c *gin.Context) {
 
 	clinicalID, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	//userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
-	log.Default().Println("clinicalID= ", clinicalID)
+	userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
 
-	/*if patientID != userID {
+	if clinicalID != userID {
 		c.JSON(401, gin.H{
 			"message": "error - Unauthorized",
 			"error":   "Unauthorized",
 		})
 		return
 	}
-	*/
 
 	if err != nil {
 		c.JSON(404, gin.H{
@@ -134,7 +136,7 @@ func GetClinicalSubmissions(c *gin.Context) {
 		return
 	}
 
-	clinicals, err := service.GetClinicalSubmissions(clinicalID) //userID)
+	patientSubmissionsResponse, err := service.GetPatientsSubmissions(clinicalID)
 
 	if err != nil {
 		c.JSON(404, gin.H{
@@ -142,10 +144,14 @@ func GetClinicalSubmissions(c *gin.Context) {
 			"error":   err.Error(),
 		})
 		return
+	}
+
+	if patientSubmissionsResponse == nil {
+		patientSubmissionsResponse = []dto.PatientResponseDTO{}
 	}
 
 	c.JSON(200, gin.H{
-		"message":   "selected clinicals",
-		"clinicals": clinicals,
+		"message":   "selected patients submissions",
+		"clinicals": patientSubmissionsResponse,
 	})
 }

@@ -30,6 +30,10 @@ func GetAllSubmissions(c *gin.Context) {
 
 	submissions := service.GetAllSubmissions(userID)
 
+	if submissions == nil {
+		submissions = []dto.SubmissionResponseDTO{}
+	}
+
 	c.JSON(200, gin.H{
 		"message":     "select submissions",
 		"submissions": submissions,
@@ -90,12 +94,12 @@ func GetSubmission(c *gin.Context) {
 		return
 	}
 
-	if !service.IsAllowedToEdit(userID, submissionID) {
+	/*if !service.IsAllowedToEdit(userID, submissionID) {
 		c.JSON(401, gin.H{
 			"message": "you do not have the permission - you are not the owner of this submission",
 		})
 		return
-	}
+	}*/
 
 	c.JSON(200, gin.H{
 		"message":    "select submission",
@@ -248,4 +252,18 @@ func GetAllImages(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, images)
+}
+
+func ExportForResearch(c *gin.Context) {
+
+	submissions := service.GetAllResearchSubmissions()
+
+	if submissions == nil {
+		submissions = []dto.SubmissionExportResearcherDTO{}
+	}
+
+	c.JSON(200, gin.H{
+		"message":     "select Research submissions",
+		"submissions": submissions,
+	})
 }

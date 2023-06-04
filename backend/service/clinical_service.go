@@ -2,29 +2,33 @@ package service
 
 import (
 	"errors"
-	"log"
 	"pawAPIbackend/dto"
 	"pawAPIbackend/entity"
 	"pawAPIbackend/repository"
-
-	"github.com/mashingan/smapping"
 )
 
-func GetClinicals(userID uint64) []dto.ClinicalResponseDTO {
-	var clinicalResponse []dto.ClinicalResponseDTO
-	clinicals := repository.GetAllUserClinicals(userID)
+func GetClinicals(userID uint64) ([]dto.ClinicalResponseDTO, error) {
+	var clinicalEmailResponse []dto.ClinicalResponseDTO
+
+	patientUser, _ := repository.GetUser(userID)
+	if patientUser.IsClinical != false {
+		return clinicalEmailResponse, errors.New("User is not a patient")
+	}
+
+	clinicals := repository.GetClinicals(userID)
+
+	if clinicals == nil {
+		return clinicalEmailResponse, errors.New("no clinicals found")
+	}
 
 	for _, clinical := range clinicals {
 		response := dto.ClinicalResponseDTO{}
-		err := smapping.FillStruct(&response, smapping.MapFields(&clinical))
-		if err != nil {
-			log.Fatal("failed to map clinical to response ", err)
-			return clinicalResponse
-		}
-		clinicalResponse = append(clinicalResponse, response)
+		response.ClinicalEmail = clinical.Clinical.Email
+		clinicalEmailResponse = append(clinicalEmailResponse, response)
 	}
 
-	return clinicalResponse
+	return clinicalEmailResponse, nil
+
 }
 
 func AddUserClinical(patientID uint64, clinicalCreateDTO dto.ClinicalCreateDTO) (dto.ClinicalRequestDTO, error) {
@@ -68,21 +72,27 @@ func AddUserClinical(patientID uint64, clinicalCreateDTO dto.ClinicalCreateDTO) 
 	return clinicalResponseDTO, err
 }
 
-func GetClinicalSubmissions(clinicalID uint64) ([]dto.ClinicalSubmissionResponseDTO, error) {
-	var clinicalSubmissionsResponse []dto.ClinicalSubmissionResponseDTO
+func GetPatientsSubmissions(clinicalID uint64) ([]dto.PatientResponseDTO, error) {
+	var clinicalSubmissionsResponse []dto.PatientResponseDTO
 
-	clinicals := repository.GetAllUserClinicals(clinicalID)
-
-	for _, clinical := range clinicals {
-		response := dto.ClinicalSubmissionResponseDTO{}
-		response.Submission = GetAllSubmissions(clinical.PatientID)
-		response.Email = clinical.Patient.Email
-		clinicalSubmissionsResponse = append(clinicalSubmissionsResponse, response)
+	clinicalUser, nil := repository.GetUser(clinicalID)
+	if clinicalUser.IsClinical == false {
+		return clinicalSubmissionsResponse, errors.New("User is not a clinical")
 	}
 
-	/*if err != nil {
-		return clinicalSubmissionsResponse, nil
-	}*/
+	clinicals := repository.GetPatients(clinicalID)
+
+	for _, clinical := range clinicals {
+		response := dto.PatientResponseDTO{}
+		response.Submission = GetAllSubmissions(clinical.PatientID)
+
+		if len(response.Submission) == 0 {
+			response.Submission = []dto.SubmissionResponseDTO{}
+		}
+
+		response.PatientEmail = clinical.Patient.Email
+		clinicalSubmissionsResponse = append(clinicalSubmissionsResponse, response)
+	}
 
 	return clinicalSubmissionsResponse, nil
 }

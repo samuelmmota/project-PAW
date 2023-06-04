@@ -60,16 +60,26 @@ func main() {
 			user.DELETE("/:id", middleware.Authorized(), controller.DeleteAccount) // com AUTH + OWNER
 		}
 
-		clinical := user.Group("/clinical")
+		//for patients -> use patient ID
+		clinical := v1.Group("/clinical")
 		{
-			clinical.GET("/:id", middleware.Authorized(), controller.GetUserClinicals)
-			clinical.GET("/clinicals/:id", middleware.Authorized(), controller.GetUserClinicals)
-			clinical.GET("/patients/:id", middleware.Authorized(), controller.GetUserClinicals)
-
-			clinical.GET("/submission/:id", middleware.Authorized(), controller.GetClinicalSubmissions)
-
+			clinical.GET("/:id", middleware.Authorized(), controller.GetClinicals)
 			clinical.POST("/:id", middleware.Authorized(), controller.AddUserClinical)
 			clinical.DELETE("/:id", middleware.Authorized(), controller.RemoveUserClinical)
+		}
+
+		//for clinicals -> use clinical ID
+		patient := v1.Group("/patient")
+		{
+			patient.GET("/:id", middleware.Authorized(), controller.GetPatientsSubmissions)
+		}
+
+		message := v1.Group("/message")
+		{
+			message.GET("/:id", middleware.Authorized(), controller.GetMessages)
+			message.POST("/", middleware.Authorized(), controller.AddMessage)
+
+			//message.DELETE("/:id", middleware.Authorized(), controller.DeleteMessage)
 		}
 
 		//TEST
@@ -84,6 +94,11 @@ func main() {
 			submission.POST("/", middleware.Authorized(), controller.InsertSubmission)
 			submission.PUT("/:id", middleware.Authorized(), controller.UpdateSubmission) // DTO -> AUTH + OWNER
 			submission.DELETE("/:id", middleware.Authorized(), controller.DeleteSubmission)
+		}
+
+		export := v1.Group("/export")
+		{
+			export.GET("/", controller.ExportForResearch)
 		}
 
 	}

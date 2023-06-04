@@ -26,11 +26,11 @@ const Header = () => {
 
   var userID = 0;
 
-  if(token !== null){
+  if (token !== null) {
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     userID = decodedToken.user_id;
   }
-  
+
   const [user, setUser] = useState({
   });
 
@@ -39,7 +39,7 @@ const Header = () => {
   }, []);
 
   async function getMyUser() {
-    if(token === null){
+    if (token === null) {
       return;
     }
     const url = userUrl + userID;
@@ -54,7 +54,8 @@ const Header = () => {
       });
       console.log(response);
     } catch (err) {
-      console.log(err);}
+      console.log(err);
+    }
   }
 
 
@@ -83,19 +84,22 @@ const Header = () => {
         <CustomTitle variant="h6" onClick={() => navigate("/")}>Clinical Feedback</CustomTitle>
         {isLoggedIn ? (
           <>
-            <Button color="inherit" onClick={handleEvaluate}>
-              Evaluate
-            </Button>
-
-            {!user.user_is_clinical && (
+            {!user.user_is_clinical ? (
               <>
-            <Button color="inherit" onClick={() => navigate("/addsubmission")}>
-              Add Submission
-            </Button>
-            <Button color="inherit" onClick={handleGallery}>
-              Gallery
-            </Button>
-            </>
+                <Button color="inherit" onClick={() => navigate("/addsubmission")}>
+                  Add Submission
+                </Button>
+                <Button color="inherit" onClick={handleGallery}>
+                  Gallery
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button color="inherit" onClick={handleEvaluate}>
+                  Evaluate
+                </Button>
+
+              </>
             )}
             <Button color="inherit" onClick={handleLogout}>
               Logout

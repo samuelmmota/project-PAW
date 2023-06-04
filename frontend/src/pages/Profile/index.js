@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import User from "../../components/User";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { userUrl, clinicalUrl, refreshTokenUrl } from "../../resources/constants.js";
 import { Form, ClinicalList, ClinicalItem, RemoveButton, PageContainer } from "./styles";
 import PageLayout from "../../components/PageLayout";
+
 const Profile = () => {
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;
 
-  const [user, setUser] = useState({
-  });
+  const [user, setUser] = useState({});
 
   const [clinical, setClinical] = useState("");
 
@@ -42,10 +41,10 @@ const Profile = () => {
     }
   }
 
-
   async function getMyUser() {
-  const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const userID = decodedToken.user_id;
+    console.log("Requesting My User");
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const userID = decodedToken.user_id;
     const url = userUrl + userID;
     try {
       const response = await Axios.get(url, {
@@ -55,6 +54,7 @@ const Profile = () => {
       setUser({
         user_email: userData.email,
         user_is_clinical: userData.isClinical,
+        user_is_export_to_research: userData.exportToReasearcher,
       });
       console.log(response);
     } catch (err) {
@@ -69,8 +69,9 @@ const Profile = () => {
   }
 
   async function getClinicals() {
+    console.log("Requesting clinicals");
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const userID = decodedToken.user_id;
+    const userID = decodedToken.user_id;
     const url = clinicalUrl + userID;
     try {
       const response = await Axios.get(url, {
@@ -78,7 +79,7 @@ const Profile = () => {
       });
       setUser((prevState) => ({
         ...prevState,
-        clinicals: response.data.clinicals,
+        clinicals: response.data.clinicals || [], // Check if response.data.clinicals is null and set an empty array if it is
       }));
     } catch (err) {
       console.log(err);
@@ -89,9 +90,10 @@ const Profile = () => {
   }
 
   async function addClinical(e) {
+    console.log("Add clinical");
     e.preventDefault();
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const userID = decodedToken.user_id;
+    const userID = decodedToken.user_id;
     const url = clinicalUrl + userID;
     try {
       const response = await Axios.post(
@@ -123,9 +125,9 @@ const Profile = () => {
       });
     }
   }
-  
 
   async function removeClinical(clinicalID) {
+    console.log("Remove clinicals");
     const url = userUrl + clinicalID;
     try {
       await Axios.delete(url, {
@@ -149,42 +151,48 @@ const Profile = () => {
     }
   }
 
+  console.log(user);
   return (
-    <>
-<PageLayout>
+    <PageLayout>
       <ToastContainer />
       {isLoggedIn && (
-        <User userName={user.user_name} userEmail={user.user_email} isClinical= {user.user_is_clinical} />
+        <User
+          userEmail={user.user_email}
+          isClinical={user.user_is_clinical}
+          isExportToResearchSet={user.user_is_export_to_research}
+        />
       )}
-       {!user.user_is_clinical && (
-              <> 
-              <Form onSubmit={addClinical}>
-              <label>Add Clinicals to Evaluate your submissions:</label>
-              <input
-                type="text"
-                name="clinical"
-                value={clinical}
-                onChange={(e) => setClinical(e.target.value)}
-              />
-              <button type="submit">Add</button>
-            </Form>
-            <ClinicalList>
-        {user.clinicals && user.clinicals.length !== 0 && (
-          user.clinicals.map((clinical) => (
-            <ClinicalItem key={clinical.clinical.id}>
-              {clinical.clinical.email}
-              <RemoveButton onClick={() => removeClinical(clinical.clinical.id)}>
-                X
-              </RemoveButton>
-            </ClinicalItem>
-          ))
-        )}
-      </ClinicalList>
-      </>
-              )}
-
-</PageLayout>
-    </>
+      {!user.user_is_clinical && (
+        <>
+          <Form onSubmit={addClinical}>
+            <label>Add Clinicals to Evaluate your submissions:</label>
+            <input
+              type="text"
+              name="clinical"
+              value={clinical}
+              onChange={(e) => setClinical(e.target.value)}
+            />
+            <button type="submit">Add</button>
+          </Form>
+          <ClinicalList>
+            {user.clinicals && user.clinicals.length !== 0 ? (
+              user.clinicals.map((clinical) => (
+                <ClinicalItem key={clinical.id}>
+                  {clinical.clinical_email}
+                  <RemoveButton
+                    onClick={() => removeClinical(clinical.id)}
+                  >
+                    X
+                  </RemoveButton>
+                </ClinicalItem>
+              ))
+            ) : (
+              <ClinicalItem>No clinicals available</ClinicalItem>
+            )}
+          </ClinicalList>
+        </>
+      )}
+    </PageLayout>
   );
 };
 

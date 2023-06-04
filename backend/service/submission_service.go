@@ -275,7 +275,6 @@ func decryptImage(encryptedData []byte, userKey string) ([]byte, error) {
 	return decryptedData, nil
 }
 
-
 func InsertImage(image []byte, userId uint64) ([]byte, error) {
 
 	user, err := repository.GetUser(userId)
@@ -283,7 +282,7 @@ func InsertImage(image []byte, userId uint64) ([]byte, error) {
 		log.Fatal("failed to get user ", err)
 		return nil, err
 	}
-	
+
 	key := user.Key
 
 	//Encrypt the image data using the user's key
@@ -347,9 +346,25 @@ func getFileExtension(mediaType string) string {
 	return ""
 }
 
+func GetAllResearchSubmissions() []dto.SubmissionExportResearcherDTO {
+	var submissionResponse []dto.SubmissionExportResearcherDTO
+	submissions := repository.GetAllResearchSubmissions()
+
+	for _, user := range submissions {
+		response := dto.SubmissionExportResearcherDTO{}
+		err := smapping.FillStruct(&response, smapping.MapFields(&user))
+		if err != nil {
+			log.Fatal("failed to map submission to response ", err)
+			return submissionResponse
+		}
+		submissionResponse = append(submissionResponse, response)
+	}
+
+	return submissionResponse
+}
 func ConverterDate(date string) (string, error) {
 
-	newInputDate:= removeSubstring(date)
+	newInputDate := removeSubstring(date)
 	// Define o layout de entrada
 	layoutEntrada := "Mon Jan 2 2006 15:04:05"
 	// Converte a string para um objeto time.Time
@@ -374,4 +389,3 @@ func removeSubstring(str string) string {
 	}
 	return str
 }
-
