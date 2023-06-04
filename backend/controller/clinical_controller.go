@@ -110,3 +110,42 @@ func RemoveUserClinical(c *gin.Context) {
 	})
 }
 */
+
+func GetClinicalSubmissions(c *gin.Context) {
+
+	clinicalID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	//userID, err := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+	log.Default().Println("clinicalID= ", clinicalID)
+
+	/*if patientID != userID {
+		c.JSON(401, gin.H{
+			"message": "error - Unauthorized",
+			"error":   "Unauthorized",
+		})
+		return
+	}
+	*/
+
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	clinicals, err := service.GetClinicalSubmissions(clinicalID) //userID)
+
+	if err != nil {
+		c.JSON(404, gin.H{
+			"message": "error",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message":   "selected clinicals",
+		"clinicals": clinicals,
+	})
+}

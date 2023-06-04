@@ -1,11 +1,11 @@
 package dto
 
 type UserUpdateDTO struct {
-	ID       uint64 `json:"id" form:"id"`
-	Email    string `json:"email" form:"email" binding:"email"`
-	Password string `json:"password" form:"password,omitempty"`
-	//Clinicals []EvaluateResponseDTO `json:"clinicals" form:"clinicals"`
-	//Patients  []EvaluateResponseDTO `json:"patients" form:"patients"`
+	ID                  uint64 `json:"id" form:"id"`
+	Email               string `json:"email" form:"email"`
+	Password            string `json:"password" form:"password,omitempty"`
+	ExportToReasearcher bool   `json:"exportToReasearcher" form:"exportToReasearcher"`
+	IsClinical          string `json:"isClinical" form:"isClinical"`
 }
 
 type RegisterDTO struct {
@@ -14,17 +14,15 @@ type RegisterDTO struct {
 }
 
 type UserResponseDTO struct {
-	ID    uint64 `json:"id" form:"id"`
-	Email string `json:"email" form:"email" binding:"required" validate:"email"`
-	//Clinicals []EvaluateResponseDTO `json:"clinicals" form:"clinicals"`
-	//Patients  []EvaluateResponseDTO `json:"patients" form:"patients"`
+	ID         uint64 `json:"id" form:"id"`
+	Email      string `json:"email" form:"email" binding:"required" validate:"email"`
+	IsClinical bool   `json:"isClinical" form:"isClinical"`
 }
 
 type UserProfileResponseDTO struct {
-	ID    uint64 `json:"id" form:"id"`
-	Email string `json:"email" form:"email" binding:"required" validate:"email"`
-	//Clinicals []EvaluateResponseDTO `json:"clinicals" form:"clinicals"`
-	//Patients  []EvaluateResponseDTO `json:"patients" form:"patients"`
+	ID         uint64 `json:"id" form:"id"`
+	Email      string `json:"email" form:"email" binding:"required" validate:"email"`
+	IsClinical bool   `json:"isClinical" form:"isClinical"`
 }
 
 type EvaluateResponseDTO struct {

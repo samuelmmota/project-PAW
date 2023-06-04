@@ -59,7 +59,7 @@ export const ButtonLogin = styled.button`
 export const ButtonRegister = styled.button`
   margin-top: 8px;
   border: none;
-  color: #fff;
+  color: #ffffff;
   padding: 8px 54px;
   background: ${secondaryColor};
   border-radius: 4px;

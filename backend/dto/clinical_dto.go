@@ -12,3 +12,8 @@ type ClinicalResponseDTO struct {
 type ClinicalCreateDTO struct {
 	ClinicalEmail string `json:"clinical_email" form:"clinical_email" binding:"required" validate:"email"`
 }
+
+type ClinicalSubmissionResponseDTO struct {
+	Submission []SubmissionResponseDTO `json:"submission" form:"submission"`
+	Email      string                  `json:"email" form:"email"`
+}
