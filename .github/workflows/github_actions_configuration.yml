@@ -20,8 +20,11 @@ jobs:
         with:
           go-version: 1.16
 
+      - name: Cd to backend Go module
+        run: cd backend
+
       - name: Initialize Go module
-        run: go mod init example.com/m
+        run: go mod init
 
       - name: Build backend
         run: go build ./backend
