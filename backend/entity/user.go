@@ -7,5 +7,5 @@ type User struct {
 	ExportToReasearcher bool   `gorm:"default:false" json:"exportToReasearcher"`
 	IsClinical          bool   `gorm:"default:false" json:"isClinical"`
 	Token               string `gorm:"-" json:"token"`
-	Key                 string `gorm:"type:varchar(20)" json:"key"`
+	Key                 string `gorm:"type:varchar(20)" json:"key" `
 }
