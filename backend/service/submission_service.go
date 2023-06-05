@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"fmt"
 
 	"golang.org/x/crypto/scrypt"
 
@@ -36,14 +37,17 @@ func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 			log.Fatal("failed to map submission to response ", err)
 			return submissionResponse
 		}
+		
+		if response.MediaType != "video" {
+			fmt.Println("Entrei no Get ALL")
+			imageDecrypted, err := GetImage(response.Media, userID)
+			if err != nil {
+				log.Fatal("Failed to decrypt image", err)
+				return submissionResponse
+			}
 
-		imageDecrypted, err := GetImage(response.Media, userID)
-		if err != nil {
-			log.Fatal("Failed to decrypt image", err)
-			return submissionResponse
+			response.Media = imageDecrypted
 		}
-
-		response.Media = imageDecrypted
 
 		submissionResponse = append(submissionResponse, response)
 	}
@@ -90,15 +94,18 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 		return submissionResponse, err
 	}
 
-	imageEncrypted, err := InsertImage(fileBytes, userID)
-	if err != nil {
-		log.Fatal("Failed to encrypt image", err)
-		return submissionResponse, err
+	if submission.MediaType != "video" {
+		fmt.Println("Entrei no Insert")
+		imageEncrypted, err := InsertImage(fileBytes, userID)
+		if err != nil {
+			log.Fatal("Failed to encrypt image", err)
+			return submissionResponse, err
+		}
+
+		submission.Media = imageEncrypted
 	}
 
 	submission.UserID = userID
-
-	submission.Media = imageEncrypted
 
 	submission.Date = newDate
 
@@ -120,19 +127,22 @@ func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 	if submission, err := repository.GetSubmission(submissionID); err == nil {
 
 		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
+		fmt.Println("Submission MediaYpe: ",submissionResponse.MediaType)
 
 		if err != nil {
 			log.Fatal("failed to map to response ", err)
 			return submissionResponse, err
 		}
 
-		imageDecrypted, err := GetImage(submissionResponse.Media, submission.UserID)
-		if err != nil {
-			log.Fatal("Failed to decrypt image", err)
-			return submissionResponse, err
+		if submissionResponse.MediaType != "video" {
+			fmt.Println("Entrei no Get")
+			imageDecrypted, err := GetImage(submissionResponse.Media, submission.UserID)
+			if err != nil {
+				log.Fatal("Failed to decrypt image", err)
+				return submissionResponse, err
+			}
+			submissionResponse.Media = imageDecrypted
 		}
-
-		submissionResponse.Media = imageDecrypted
 
 		return submissionResponse, nil
 	}
