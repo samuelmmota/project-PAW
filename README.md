@@ -22,7 +22,7 @@ sudo docker-compose --env-file backend/.env up app database
    [x] a. Authenticated users will navigate to the "Upload Image" page.
    [x] b. Users will select an image file from their local device and provide a description and the body positions of the image (e.g., head, stomach, leg, arm, etc.).
    [] c. The server will encrypt the image using a secure encryption mechanism.
-   [] d. The encrypted image and the image description will be stored in the database. 
+   [x] d. The encrypted image and the image description will be stored in the database. 
    [x] e. The user will be redirected to the "My Images" page (i.e., gallery of images).
 
 3. Image Management: Authenticated users will be able to view a list of their uploaded images, update and delete them. They will also be able to filter the images based on the date and body positions.
@@ -37,8 +37,8 @@ Web Application Design & Project in Systems and Networks 2
    [x] a. Users will navigate to the "Clinical Feedback" page.
    [x] b. Users will select which clinicians they want to authorize to view their uploaded images.
    [x] c. Clinicians will navigate to the "Clinical Feedback" page and view the authorized patient's uploaded images.
-   [] d. Clinicians will be able to provide textual feedback for each image.
-   [] e. Clinicians will be able to view their own feedback and feedback provided by other authorized clinicians.
+   [x] d. Clinicians will be able to provide textual feedback for each image.
+   [x] e. Clinicians will be able to view their own feedback and feedback provided by other authorized clinicians.
 
 5. Image Security: All images will be encrypted using a secure mechanism so that they can only be viewed by the patient and their authorized clinicians.
    [] a. All images will be encrypted using a secure encryption mechanism before being stored in the database.
@@ -47,5 +47,5 @@ Web Application Design & Project in Systems and Networks 2
 
 6. Future Enhancements:
    [x] a. Add support for video submissions to allow users to capture the progression of their psoriasis over time.
-   [] b. Implement a feature to allow users to share their images with others for research or educational purposes, with their consent
+   [x] b. Implement a feature to allow users to share their images with others for research or educational purposes, with their consent
    [(*x*)] c. Be able to relate a new image to a previous one in order to follow the clinical evolution of a given patient (timeline)
