@@ -113,9 +113,8 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	return submissionResponse, err
 }
 
-func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDTO, error) {
+func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 	submissionResponse := dto.SubmissionResponseDTO{}
-
 	//TODO: Validation user before get submission
 
 	if submission, err := repository.GetSubmission(submissionID); err == nil {
@@ -127,17 +126,16 @@ func GetSubmission(submissionID uint64, userId uint64) (dto.SubmissionResponseDT
 			return submissionResponse, err
 		}
 
+		imageDecrypted, err := GetImage(submissionResponse.Media, submission.UserID)
+		if err != nil {
+			log.Fatal("Failed to decrypt image", err)
+			return submissionResponse, err
+		}
+
+		submissionResponse.Media = imageDecrypted
+
 		return submissionResponse, nil
 	}
-
-	imageDecrypted, err := GetImage(submissionResponse.Media, userId)
-	if err != nil {
-		log.Fatal("Failed to decrypt image", err)
-		return submissionResponse, err
-	}
-
-	submissionResponse.Media = imageDecrypted
-
 	return submissionResponse, errors.New("submission do not exist")
 }
 
