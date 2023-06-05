@@ -5,6 +5,9 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
+	"fmt"
+	"github.com/mashingan/smapping"
+	"golang.org/x/crypto/scrypt"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
@@ -14,11 +17,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"fmt"
-
-	"golang.org/x/crypto/scrypt"
-
-	"github.com/mashingan/smapping"
 )
 
 const (
