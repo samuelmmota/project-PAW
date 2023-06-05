@@ -82,6 +82,7 @@ const EvaluateSubmission = () => {
             toast.success("Message added successfully", {
                 position: toast.POSITION.TOP_RIGHT,
             });
+            window.location.reload();
         } catch (error) {
             console.error("Error adding message:", error);
             toast.error(error.response.data.error, {
