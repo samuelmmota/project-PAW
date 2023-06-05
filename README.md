@@ -11,6 +11,10 @@ sudo docker-compose --env-file backend/.env up
 sudo docker-compose --env-file backend/.env up --build
 sudo docker-compose --env-file backend/.env up app database
 
+#docker-compose.yml
+     - ${PWD}/backend/mariadb:/var/lib/mysql
+
+
 1. User Registration: The users will be able to register themselves on the website using their email address and password. Once registered, the user will be authenticated and can access the features of the website.
    [x] a. Users will navigate to the website and select the "Register" button.
    [x] b. Users will be directed to a registration form where they will enter their email address and password.
