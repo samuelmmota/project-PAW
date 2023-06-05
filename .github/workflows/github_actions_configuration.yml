@@ -21,7 +21,7 @@ jobs:
           go-version: 1.16
           
       - name: Build backend
-        run: cd ./backend && go build
+        run: cd ./backend && go mod tidy && go build
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
