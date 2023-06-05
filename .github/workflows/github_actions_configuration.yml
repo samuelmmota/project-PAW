@@ -23,9 +23,6 @@ jobs:
       - name: Cd to backend Go module
         run: cd backend
 
-      - name: Initialize Go module
-        run: go mod init
-
       - name: Build backend
         run: go build 
 
