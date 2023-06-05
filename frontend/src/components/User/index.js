@@ -47,6 +47,7 @@ const User = ({ userName, userEmail, isClinical, isExportToResearchSet }) => {
           },
         }
       );
+      window.location.reload();
     } catch (error) {
       toast.error(error.response?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
