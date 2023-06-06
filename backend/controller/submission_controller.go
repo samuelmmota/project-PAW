@@ -10,8 +10,6 @@ import (
 	"pawAPIbackend/service"
 	"strconv"
 
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,8 +40,8 @@ func GetAllSubmissions(c *gin.Context) {
 
 func InsertSubmission(c *gin.Context) {
 	var submissionCreateDTO dto.SubmissionCreateDTO
-	// Read the Media file from the request body
 
+	// Read the Media file from the request body
 	multipartFile, err := c.FormFile("media")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -61,10 +59,9 @@ func InsertSubmission(c *gin.Context) {
 		})
 		return
 	}
+
 	//vai buscar ao token(conveertido em string nos parematros) to jwt token
 	userID, _ := strconv.ParseUint(c.GetString("user_id"), 10, 64)
-
-	fmt.Println("Add Date : ",submissionCreateDTO.Date)
 
 	submission, err := service.InsertSubmission(submissionCreateDTO, multipartFile, userID)
 	if err != nil {
@@ -93,13 +90,6 @@ func GetSubmission(c *gin.Context) {
 		return
 	}
 
-	/*if !service.IsAllowedToEdit(userID, submissionID) {
-		c.JSON(401, gin.H{
-			"message": "you do not have the permission - you are not the owner of this submission",
-		})
-		return
-	}*/
-
 	c.JSON(200, gin.H{
 		"message":    "select submission",
 		"submission": submissionResponseDTO,
@@ -127,8 +117,6 @@ func UpdateSubmission(c *gin.Context) {
 		})
 		return
 	}
-
-	fmt.Println("Update Date : ",submission.Date)
 
 	submission.ID = submissionID
 	submission.UserID = userID

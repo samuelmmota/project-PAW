@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
@@ -33,15 +32,14 @@ func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 		response := dto.SubmissionResponseDTO{}
 		err := smapping.FillStruct(&response, smapping.MapFields(&user))
 		if err != nil {
-			log.Fatal("failed to map submission to response ", err)
+			log.Default().Println("Failed to map submission to response ", err)
 			return submissionResponse
 		}
 
 		if response.MediaType != "video" {
-			fmt.Println("Entrei no Get ALL")
 			imageDecrypted, err := GetImage(response.Media, userID)
 			if err != nil {
-				log.Fatal("Failed to decrypt image", err)
+				log.Default().Println("Failed to decrypt image", err)
 				return submissionResponse
 			}
 
@@ -60,19 +58,19 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 	err := smapping.FillStruct(&submission, smapping.MapFields(&submissionCreateDTO))
 	if err != nil {
-		log.Fatal("failed to map ", err)
+		log.Default().Println("failed to map ", err)
 		return submissionResponse, err
 	}
 
 	err = isValidFormat(multipartFile.Filename)
 	if err != nil {
-		log.Fatal("Wrong format type inserted!", err)
+		log.Default().Println("Wrong format type inserted!", err)
 		return submissionResponse, err
 	}
 
 	newDate, err := ConverterDate(submissionCreateDTO.Date)
 	if err != nil {
-		log.Fatal("Wrong format type inserted!", err)
+		log.Default().Println("Failed to convert date!", err)
 		return submissionResponse, err
 	}
 
@@ -81,7 +79,7 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 	file, err := multipartFile.Open()
 	if err != nil {
-		log.Fatal("Failed to open image file ", err)
+		log.Default().Println("Failed to open image file ", err)
 		return submissionResponse, err
 	}
 	defer file.Close()
@@ -89,15 +87,14 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	// Read the file content
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatal("Failed to read image file", err)
+		log.Default().Println("Failed to read image file", err)
 		return submissionResponse, err
 	}
 
 	if submission.MediaType != "video" {
-		fmt.Println("Encriptei um ficehiro to tipo", submission.MediaType)
 		imageEncrypted, err := InsertImage(fileBytes, userID)
 		if err != nil {
-			log.Fatal("Failed to encrypt image", err)
+			log.Default().Println("Failed to encrypt image", err)
 			return submissionResponse, err
 		}
 
@@ -114,7 +111,7 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 	err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
 	if err != nil {
-		log.Fatal("failed to map to response ", err)
+		log.Default().Println("failed to map to response ", err)
 		return submissionResponse, err
 	}
 
@@ -123,23 +120,20 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 
 func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 	submissionResponse := dto.SubmissionResponseDTO{}
-	//TODO: Validation user before get submission
 
 	if submission, err := repository.GetSubmission(submissionID); err == nil {
 
 		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
-		fmt.Println("Submission MediaYpe: ", submissionResponse.MediaType)
 
 		if err != nil {
-			log.Fatal("failed to map to response ", err)
+			log.Default().Println("failed to map to response ", err)
 			return submissionResponse, err
 		}
 
 		if submissionResponse.MediaType != "video" {
-			fmt.Println("Entrei no Get")
 			imageDecrypted, err := GetImage(submissionResponse.Media, submission.UserID)
 			if err != nil {
-				log.Fatal("Failed to decrypt image", err)
+				log.Default().Println("Failed to decrypt image", err)
 				return submissionResponse, err
 			}
 			submissionResponse.Media = imageDecrypted
@@ -183,7 +177,7 @@ func UpdateSubmission(submissionDTO dto.SubmissionUpdateDTO) (dto.SubmissionResp
 		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submissionUpdated))
 
 		if err != nil {
-			log.Fatal("failed to map to response ", err)
+			log.Default().Println("failed to map to response ", err)
 			return submissionResponse, err
 		}
 
@@ -288,7 +282,7 @@ func InsertImage(image []byte, userId uint64) ([]byte, error) {
 
 	user, err := repository.GetUser(userId)
 	if err != nil {
-		log.Fatal("failed to get user ", err)
+		log.Default().Println("failed to get user ", err)
 		return nil, err
 	}
 
@@ -297,7 +291,7 @@ func InsertImage(image []byte, userId uint64) ([]byte, error) {
 	//Encrypt the image data using the user's key
 	encryptedImage, err := encryptImage(image, key)
 	if err != nil {
-		log.Fatal("failed to encrypt image: ", err)
+		log.Default().Println("failed to encrypt image: ", err)
 		return nil, err
 	}
 
@@ -310,7 +304,7 @@ func GetImage(image []byte, userId uint64) ([]byte, error) {
 
 	user, err := repository.GetUser(userId)
 	if err != nil {
-		log.Fatal("failed to get user ", err)
+		log.Default().Println("failed to get user ", err)
 		return nil, err
 	}
 
@@ -319,7 +313,7 @@ func GetImage(image []byte, userId uint64) ([]byte, error) {
 	//Decrypt the image data using the user's key
 	decryptedImage, err := decryptImage(image, key)
 	if err != nil {
-		log.Fatal("failed to decrypt image: ", err)
+		log.Default().Println("failed to decrypt image: ", err)
 		return nil, err
 	}
 
@@ -363,7 +357,7 @@ func GetAllResearchSubmissions() []dto.SubmissionExportResearcherDTO {
 		response := dto.SubmissionExportResearcherDTO{}
 		err := smapping.FillStruct(&response, smapping.MapFields(&user))
 		if err != nil {
-			log.Fatal("failed to map submission to response ", err)
+			log.Default().Println("failed to map submission to response ", err)
 			return submissionResponse
 		}
 		submissionResponse = append(submissionResponse, response)

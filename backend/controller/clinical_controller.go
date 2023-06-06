@@ -2,13 +2,12 @@ package controller
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"pawAPIbackend/dto"
 	"pawAPIbackend/service"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 func GetClinicals(c *gin.Context) {

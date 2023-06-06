@@ -11,9 +11,6 @@ import Edituser from "../pages/EditUser";
 import Evaluate from "../pages/Evaluate";
 import EvaluateSubmission from "../pages/EvaluateSubmission";
 import ViewSubmission from "../pages/ViewSubmission";
-import { Navigate } from "react-router-dom";
-import Footer from "../components/Footer";
-
 const Router = () => {
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;

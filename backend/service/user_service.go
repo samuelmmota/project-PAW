@@ -23,7 +23,7 @@ func GetAllUsers() []dto.UserResponseDTO {
 		response := dto.UserResponseDTO{}
 		err := smapping.FillStruct(&response, smapping.MapFields(&user))
 		if err != nil {
-			log.Fatal("failed to map to response ", err)
+			log.Default().Println("failed to map to response ", err)
 			return responseList
 		}
 		responseList = append(responseList, response)
@@ -36,7 +36,7 @@ func Register(user entity.User) (entity.User, error) {
 	err := EncryptPassword(&user)
 	key, err := GenerateRandomString(20)
 	if err != nil {
-		log.Fatal("Failed to generate key:", err)
+		log.Default().Println("Failed to generate key:", err)
 		return entity.User{}, err
 	}
 	user.Key = key
@@ -60,7 +60,7 @@ func Profile(id uint64) (dto.UserProfileResponseDTO, error) {
 
 	err = smapping.FillStruct(&userResponse, smapping.MapFields(&user))
 	if err != nil {
-		log.Fatal("failed to map to response ", err)
+		log.Default().Println("failed to map to response ", err)
 		return userResponse, err
 	}
 
@@ -105,7 +105,7 @@ func UpdateProfile(userDto dto.UserUpdateDTO) (dto.UserResponseDTO, error) {
 		err = smapping.FillStruct(&userResponse, smapping.MapFields(&user))
 
 		if err != nil {
-			log.Fatal("failed to map ", err)
+			log.Default().Println("failed to map ", err)
 			return userResponse, nil
 		}
 

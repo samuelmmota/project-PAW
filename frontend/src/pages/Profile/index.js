@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { userUrl, clinicalUrl, refreshTokenUrl } from "../../resources/constants.js";
-import { Form, ClinicalList, ClinicalItem, RemoveButton, PageContainer } from "./styles";
+import { Form, ClinicalList, ClinicalItem, RemoveButton } from "./styles";
 import PageLayout from "../../components/PageLayout";
 
 const Profile = () => {
@@ -79,7 +79,7 @@ const Profile = () => {
       });
       setUser((prevState) => ({
         ...prevState,
-        clinicals: response.data.clinicals || [], // Check if response.data.clinicals is null and set an empty array if it is
+        clinicals: response.data.clinicals || [], 
       }));
     } catch (err) {
       console.log(err);
@@ -116,7 +116,7 @@ const Profile = () => {
       toast.success("Clinical added successfully", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      setClinical(""); // Clear the input field after adding clinical
+      setClinical(""); 
       window.location.reload(); // Refresh the page
     } catch (err) {
       console.log(err);

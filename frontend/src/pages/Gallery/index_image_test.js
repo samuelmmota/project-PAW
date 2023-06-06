@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import Submission from "../../components/Submission";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +18,7 @@ useEffect(() => {
 
 const fetchMedia = async () => {
   try {
-    const response = await Axios.get(images_test); // Replace submissionUrl with the actual API endpoint URL for getting all media
+    const response = await Axios.get(images_test); 
     setMedia(response.data);
   } catch (error) {
     toast.error("Failed to fetch media");
@@ -36,7 +35,7 @@ const fetchMedia = async () => {
     getSubmissions();
   }, []);
 
-  // Não usa token de auth
+  
   async function getSubmissions() {
     const url = submissionUrl;
     try {
@@ -85,10 +84,4 @@ return (
   </>
 );
 };
-/*
-<img
-key={item.id}
-src={`data:image/jpeg;base64,${item.image}`}
-alt="Image"
-/>*/
 export default Gallery;

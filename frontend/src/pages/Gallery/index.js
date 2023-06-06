@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import Submission from "../../components/Submission";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ContainerSubmissions, PageContainer, FilterContainer, FilterItem, FilterLabel } from "./styles";
+import { ContainerSubmissions, FilterContainer, FilterItem, FilterLabel } from "./styles";
 import { submissionUrl } from "../../resources/constants.js";
 import { useNavigate } from "react-router-dom";
-import { evaluateUrl, loginUrl, refreshTokenUrl } from "../../resources/constants.js";
+import { refreshTokenUrl } from "../../resources/constants.js";
 import PageLayout from "../../components/PageLayout";
 
 const Gallery = () => {
