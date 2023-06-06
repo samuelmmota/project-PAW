@@ -5,7 +5,7 @@ import Axios from "axios";
 // Constants for the frontend
 
 //Strings
-const apiUrl = "http://localhost:3000/paw/api/v1";
+const apiUrl = "https://golangapi-nvhl.onrender.com/paw/api/v1";
 export const submissionUrl = `${apiUrl}/submission/`;
 export const userUrl = `${apiUrl}/user/`;
 export const auth_loginUrl = `${apiUrl}/auth/login`; 
