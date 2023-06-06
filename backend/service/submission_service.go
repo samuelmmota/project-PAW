@@ -6,8 +6,6 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/mashingan/smapping"
-	"golang.org/x/crypto/scrypt"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
@@ -17,6 +15,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mashingan/smapping"
+	"golang.org/x/crypto/scrypt"
 )
 
 const (
@@ -35,7 +36,7 @@ func GetAllSubmissions(userID uint64) []dto.SubmissionResponseDTO {
 			log.Fatal("failed to map submission to response ", err)
 			return submissionResponse
 		}
-		
+
 		if response.MediaType != "video" {
 			fmt.Println("Entrei no Get ALL")
 			imageDecrypted, err := GetImage(response.Media, userID)
@@ -93,7 +94,7 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 	}
 
 	if submission.MediaType != "video" {
-		fmt.Println("Entrei no Insert")
+		fmt.Println("Encriptei um ficehiro to tipo", submission.MediaType)
 		imageEncrypted, err := InsertImage(fileBytes, userID)
 		if err != nil {
 			log.Fatal("Failed to encrypt image", err)
@@ -101,6 +102,8 @@ func InsertSubmission(submissionCreateDTO dto.SubmissionCreateDTO, multipartFile
 		}
 
 		submission.Media = imageEncrypted
+	} else {
+		submission.Media = fileBytes
 	}
 
 	submission.UserID = userID
@@ -125,7 +128,7 @@ func GetSubmission(submissionID uint64) (dto.SubmissionResponseDTO, error) {
 	if submission, err := repository.GetSubmission(submissionID); err == nil {
 
 		err = smapping.FillStruct(&submissionResponse, smapping.MapFields(&submission))
-		fmt.Println("Submission MediaYpe: ",submissionResponse.MediaType)
+		fmt.Println("Submission MediaYpe: ", submissionResponse.MediaType)
 
 		if err != nil {
 			log.Fatal("failed to map to response ", err)

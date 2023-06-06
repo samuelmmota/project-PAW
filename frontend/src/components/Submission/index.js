@@ -18,18 +18,47 @@ import { submissionUrl } from "../../resources/constants.js";
 import styled from "styled-components";
 import { primaryColor } from "../../resources/constants.js";
 import { element } from "prop-types";
-
+import Modal from "react-modal";
+import { useState } from "react";
 
 const Submission = ({ body_part, media, media_type, date, id, description, refreshSubmissions, isClinicalViewing }) => {
   const token = sessionStorage.getItem("token");
   const isLoggedIn = token !== null;
   // variavel usada pra fazer a navegação pelas paginas
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Modal configuration
+  Modal.setAppElement("#root");
+  const customModalStyles = {
+    content: {
+      maxWidth: "100%",
+      maxHeight: "100%",
+      margin: "auto",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
+    },
+  };
 
   let displayDate = date;
   let displayMonth = "";
   let displayDay = "";
   let displayYear = "";
+
+  const openModal = () => {
+
+
+    setIsModalOpen(true);
+
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   if (date !== undefined && date !== null && date !== "") {
     const regex = /(?<=\b)\w+\s(\w+)\s(\d+)\s(\d+)\b/;
@@ -118,16 +147,32 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
       </DateText>
       <ContainerImage>
         {media_type === "image" && (
-          <ImageSubmission
-            key={id}
-            src={`data:image/jpeg;base64,${media}`}
-            alt="Image"
-          />
+          <>
+            <ImageSubmission
+              key={id}
+              src={`data:image/jpeg;base64,${media}`}
+              alt="Image"
+              onClick={openModal} // Open the modal on image click
+            />
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              style={customModalStyles}
+            >
+              <ImageSubmission
+                key={id}
+                src={`data:image/jpeg;base64,${media}`}
+                alt="Large Image"
+              />
+              <Button onClick={closeModal}>Close</Button>
+            </Modal>
+          </>
         )}
         {media_type === "video" && (
-          <VideoSubmission controls>
-            <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
-          </VideoSubmission>
+          <VideoSubmission
+            url={`data:video/mp4;base64,${media}`}
+            controls
+          />
         )}
       </ContainerImage>
       <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
