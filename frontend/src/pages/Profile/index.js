@@ -18,12 +18,12 @@ const Profile = () => {
   const [clinical, setClinical] = useState("");
 
   useEffect(() => {
-    RefreshToken();
+    //RefreshToken();
     getMyUser();
     getClinicals();
   }, []);
 
-  async function RefreshToken() {
+  /*async function RefreshToken() {
     const token = sessionStorage.getItem("token");
 
     try {
@@ -39,7 +39,7 @@ const Profile = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-  }
+  }*/
 
   async function getMyUser() {
     console.log("Requesting My User");
