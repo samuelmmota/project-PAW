@@ -26,6 +26,9 @@ jobs:
       - name: Build backend
         run: cd ./backend && go build
 
+      - name: Run tests
+        run: cd ./backend && go test ./...  
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
