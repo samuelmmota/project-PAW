@@ -13,7 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { userUrl } from "../../resources/constants.js";
 import Axios from "axios";
-const User = ({ userName, userEmail, isClinical, isExportToResearchSet }) => {
+const User = ({ userEmail, isClinical, isExportToResearchSet }) => {
 
   // variavel usada pra fazer a navegação pelas paginas
   const navigate = useNavigate();

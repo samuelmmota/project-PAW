@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageLayout from "../../components/PageLayout";
-import { Container, Typography, TextField, Button, List, ListItem, ListItemText, Divider } from "@material-ui/core";
+import { Container, Typography, List, ListItem, ListItemText, Divider } from "@material-ui/core";
 import { submissionUrl, messageUrl } from "../../resources/constants.js";
 import { ContainerSubmission, TitleSubmission, ContainerImage, ImageSubmission, VideoSubmission } from "./../../components/Submission/styles.js";
 

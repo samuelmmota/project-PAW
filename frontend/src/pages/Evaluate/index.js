@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Axios from "axios";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import User from "../../components/User";
-import styled from "styled-components";
-import { FilterItem, FilterLabel,FilterContainer,ContainerSubmissions} from "./../Gallery/styles";
+import { ContainerSubmissions} from "./../Gallery/styles";
 
 import PageLayout from "../../components/PageLayout";
-import { evaluateUrl, loginUrl, refreshTokenUrl, patientUrl } from "../../resources/constants.js";
-import { Title, Form } from "./styles";
+import { refreshTokenUrl, patientUrl } from "../../resources/constants.js";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Submission from "../../components/Submission";
 
 const Evaluate = () => {
   const token = sessionStorage.getItem("token");
-  const isLoggedIn = token !== null;
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = React.useState(0);
   const [patients, setPatients] = React.useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedBodyPart, setSelectedBodyPart] = useState("");
-  const [descriptionFilter, setDescriptionFilter] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     RefreshToken();

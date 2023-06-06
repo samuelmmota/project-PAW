@@ -9,7 +9,6 @@ import { submissionUrl, messageUrl } from "../../resources/constants.js";
 import { ContainerSubmission, TitleSubmission, ContainerImage, ImageSubmission, VideoSubmission } from "./../../components/Submission/styles.js";
 
 const EvaluateSubmission = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
 
     const [submission, setSubmission] = useState({});

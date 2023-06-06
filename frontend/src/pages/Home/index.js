@@ -1,14 +1,5 @@
 import React from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { 
-  Title,
-  Layout,
-  FeatureContainer,
-  FeatureTitle,
-  FeatureDescription,
-      
-} from "./style";
+import Title from "./style";
 import PageLayout from "../../components/PageLayout";
 const Home = () => {
   return (

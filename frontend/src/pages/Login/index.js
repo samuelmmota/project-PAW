@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import { Navigate } from "react-router-dom";
 
 import Axios from "axios";
@@ -48,10 +46,6 @@ const Login = () => {
         password: passwordRef.current.value,
       });
     }
-   /* loginUser({
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    });*/
   }
   async function loginUser(credentials) {
     console.log("login user");

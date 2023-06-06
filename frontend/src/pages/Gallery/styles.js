@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { primaryColor, secondaryColor } from "../../resources/constants.js";
+import { primaryColor } from "../../resources/constants.js";
 
 export const ContainerSubmissions = styled.div`
   display: flex;
