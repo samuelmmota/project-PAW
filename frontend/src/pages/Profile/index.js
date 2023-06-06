@@ -43,6 +43,7 @@ const Profile = () => {
 
   async function getMyUser() {
     console.log("Requesting My User");
+    const token = sessionStorage.getItem("token");
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const userID = decodedToken.user_id;
     const url = userUrl + userID;
