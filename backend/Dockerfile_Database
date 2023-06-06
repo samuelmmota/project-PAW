@@ -5,9 +5,6 @@ ENV MYSQL_DATABASE ${DB_DATABASE}
 ENV MYSQL_USER ${DB_USERNAME}
 ENV MYSQL_PASSWORD ${DB_PASSWORD}
 
-RUN mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
-COPY ./mariadb /var/lib/mysql
-
 EXPOSE 3306
 
 CMD ["mariadb"]
