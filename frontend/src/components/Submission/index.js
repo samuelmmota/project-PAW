@@ -146,7 +146,7 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
         )}
       </DateText>
       <ContainerImage>
-      {media_type === "image" && (
+        {media_type === "image" && (
           <>
             <ImageSubmission
               key={id}
@@ -169,9 +169,10 @@ const Submission = ({ body_part, media, media_type, date, id, description, refre
           </>
         )}
         {media_type === "video" && (
-          <VideoSubmission controls>
-            <source src={`data:video/mp4;base64,${media}`} type="video/mp4" />
-          </VideoSubmission>
+          <VideoSubmission
+            url={`data:video/mp4;base64,${media}`}
+            controls
+          />
         )}
       </ContainerImage>
       <TitleSubmission><b>Description: </b>{description}</TitleSubmission>
