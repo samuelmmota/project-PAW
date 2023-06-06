@@ -21,7 +21,7 @@ sudo docker-compose --env-file backend/.env up app database
 2. Image Submission: Authenticated users will be able to upload pictures of their skin affected by psoriasis. The images will be stored on the server-side.
    [x] a. Authenticated users will navigate to the "Upload Image" page.
    [x] b. Users will select an image file from their local device and provide a description and the body positions of the image (e.g., head, stomach, leg, arm, etc.).
-   [] c. The server will encrypt the image using a secure encryption mechanism.
+   [x] c. The server will encrypt the image using a secure encryption mechanism.
    [x] d. The encrypted image and the image description will be stored in the database. 
    [x] e. The user will be redirected to the "My Images" page (i.e., gallery of images).
 
@@ -29,7 +29,7 @@ sudo docker-compose --env-file backend/.env up app database
    [x] a. Authenticated users will navigate to the "My Images" page. 
    [x] b. Users will be able to view a list of their uploaded images.
 Web Application Design & Project in Systems and Networks 2
-   [] c. Users will be able to select an image and view a larger version of the image along with its description.
+   [x] c. Users will be able to select an image and view a larger version of the image along with its description.
    [x] d. Users will be able to update an image's description.
    [x] e. Users will be able to delete an image.
 
@@ -41,11 +41,11 @@ Web Application Design & Project in Systems and Networks 2
    [x] e. Clinicians will be able to view their own feedback and feedback provided by other authorized clinicians.
 
 5. Image Security: All images will be encrypted using a secure mechanism so that they can only be viewed by the patient and their authorized clinicians.
-   [] a. All images will be encrypted using a secure encryption mechanism before being stored in the database.
+   [x] a. All images will be encrypted using a secure encryption mechanism before being stored in the database.
    [x] b. Only the patient and authorized clinicians will be able to view the images by logging into the web application.
    [x] c. The web application will use appropriate security measures to protect user data, such as, SSL/TLS encryption, secure password storage, and two-factor authentication.
 
 6. Future Enhancements:
    [x] a. Add support for video submissions to allow users to capture the progression of their psoriasis over time.
    [x] b. Implement a feature to allow users to share their images with others for research or educational purposes, with their consent
-   [(*x*)] c. Be able to relate a new image to a previous one in order to follow the clinical evolution of a given patient (timeline)
+   [x] c. Be able to relate a new image to a previous one in order to follow the clinical evolution of a given patient (timeline)
