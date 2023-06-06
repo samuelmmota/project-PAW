@@ -2,7 +2,7 @@ FROM golang:alpine
 
 
 ENV GIN_MODE=release
-ENV PORT=3000
+ENV PORT=8080
 
 WORKDIR /go/src/GolangGinApi
 
